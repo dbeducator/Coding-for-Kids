@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher Dashboard — Future Ready Learners</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1A2744;
+    --navy-light: #28395E;
+    --gold: #F2B544;
+    --gold-light: #FBD98A;
+    --teal: #2EC4B6;
+    --teal-dark: #1F9D91;
+    --cream: #FBF8F2;
+    --success: #5FAD56;
+    --coral: #E8634A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+  }
+  h1, h2, .display { font-family: 'Baloo 2', sans-serif; }
+
+  .topbar {
+    background: var(--navy);
+    color: white;
+    padding: 18px 24px;
+  }
+  .topbar h1 { margin: 0; font-size: 18px; display:flex; align-items:center; justify-content:center; }
+  .topbar p { margin: 2px 0 0; font-size: 13px; color: var(--gold-light); }
+
+  .controls {
+    max-width: 900px;
+    margin: 24px auto 0;
+    padding: 0 20px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  select {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 2px solid #E5E0D3;
+    font-size: 14px;
+    background: white;
+  }
+  .refresh-btn {
+    background: var(--teal);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .refresh-btn:hover { background: var(--teal-dark); }
+
+  .summary-cards {
+    max-width: 900px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .card {
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    text-align: center;
+  }
+  .card .num {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 28px;
+    color: var(--teal-dark);
+  }
+  .card .label { font-size: 12px; color: #6B7280; margin-top: 2px; }
+
+  .table-wrap {
+    max-width: 900px;
+    margin: 24px auto 60px;
+    padding: 0 20px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  th {
+    background: var(--navy);
+    color: white;
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #F0EBDD;
+    font-size: 14px;
+  }
+  tr:last-child td { border-bottom: none; }
+  .progress-bar-bg {
+    background: #EEE8D6;
+    border-radius: 8px;
+    height: 8px;
+    width: 100px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    background: var(--success);
+    height: 100%;
+    border-radius: 8px;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #9CA3AF;
+  }
+
+  @media (max-width: 600px) {
+    .summary-cards { grid-template-columns: 1fr 1fr; }
+    th, td { padding: 10px 8px; font-size: 12px; }
+  }
+  .logo-img { width:100%; height:100%; object-fit:contain; border-radius:50%; }
+  .topbar-badge { overflow: hidden; padding: 3px; background: white !important; }
+  .topbar-badge img, .crest img, .sidebar-logo img, .logo-circle img, .crest-mini img, .logo-img {
+    width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 50%;
+  }
+  .crest { overflow: hidden; padding: 4px; background: white !important; }
+  .sidebar-logo { overflow: hidden; padding: 4px; background: white !important; }
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div style="width:40px;height:40px;border-radius:50%;overflow:hidden;background:white;padding:3px;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.2);">
+      <img src="logo.png" alt="Logo" style="width:100%;height:100%;object-fit:contain;">
+    </div>
+    <div>
+      <h1 style="margin:0;font-size:17px;">📊 Teacher Dashboard</h1>
+      <p style="margin:0;font-size:12px;color:var(--gold-light);">Future Ready Learners · Khanyisile Pre & Primary School</p>
+    </div>
+  </div>
+</div>
+
+<div class="controls">
+  <select id="classSelect">
+    <option value="">Select a class…</option>
+  </select>
+  <button class="refresh-btn" onclick="loadClassData()">Refresh</button>
+</div>
+
+<div class="summary-cards" id="summaryCards" style="display:none;">
+  <div class="card"><div class="num" id="totalStudents">0</div><div class="label">Students</div></div>
+  <div class="card"><div class="num" id="avgCompletion">0</div><div class="label">Avg. Lessons Done</div></div>
+  <div class="card"><div class="num" id="totalClassXP">0</div><div class="label">Total Class XP</div></div>
+</div>
+
+<div class="table-wrap">
+  <table id="dataTable" style="display:none;">
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Lessons Completed</th>
+        <th>Progress</th>
+        <th>XP</th>
+        <th>Last Activity</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+  <div class="empty-state" id="emptyState">Select a class above to view progress.</div>
+</div>
+
+<script src="config.js"></script>
+<script>
+const TOTAL_LESSONS = 4; // matches LESSONS array length in index.html
+
+async function loadClasses() {
+  try {
+    const res = await fetch(`${API_URL}?action=getStudents`);
+    const data = await res.json();
+    const classes = [...new Set((data.students || []).map(s => s.className))];
+    document.getElementById('classSelect').innerHTML =
+      '<option value="">Select a class…</option>' +
+      classes.map(c => `<option value="${c}">${c}</option>`).join('');
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+document.getElementById('classSelect').addEventListener('change', loadClassData);
+
+async function loadClassData() {
+  const className = document.getElementById('classSelect').value;
+  if (!className) return;
+
+  try {
+    const res = await fetch(`${API_URL}?action=getClassProgress&className=${encodeURIComponent(className)}`);
+    const data = await res.json();
+    renderTable(data.summary || []);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function renderTable(summary) {
+  const tbody = document.getElementById('tableBody');
+  const table = document.getElementById('dataTable');
+  const empty = document.getElementById('emptyState');
+  const cards = document.getElementById('summaryCards');
+
+  if (summary.length === 0) {
+    table.style.display = 'none';
+    cards.style.display = 'none';
+    empty.style.display = 'block';
+    empty.textContent = 'No students found in this class yet.';
+    return;
+  }
+
+  table.style.display = 'table';
+  cards.style.display = 'grid';
+  empty.style.display = 'none';
+
+  let totalXP = 0;
+  let totalCompleted = 0;
+
+  tbody.innerHTML = summary.map(s => {
+    const pct = Math.round((s.completedCount / TOTAL_LESSONS) * 100);
+    totalXP += s.totalXP;
+    totalCompleted += s.completedCount;
+    const lastDate = s.lastActivity ? new Date(s.lastActivity).toLocaleDateString() : '—';
+    return `
+      <tr>
+        <td>${s.name}</td>
+        <td>${s.completedCount} / ${TOTAL_LESSONS}</td>
+        <td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div></td>
+        <td>${s.totalXP} XP</td>
+        <td>${lastDate}</td>
+      </tr>
+    `;
+  }).join('');
+
+  document.getElementById('totalStudents').textContent = summary.length;
+  document.getElementById('avgCompletion').textContent = (totalCompleted / summary.length).toFixed(1);
+  document.getElementById('totalClassXP').textContent = totalXP;
+}
+
+loadClasses();
+</script>
+
+</body>
+</html>
