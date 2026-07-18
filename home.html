@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Future Ready Learners — Khanyisile Pre & Primary School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1A2744;
+    --navy-light: #28395E;
+    --orange: #F97316;
+    --orange-dark: #C2560B;
+    --orange-light: #FEF0E6;
+    --gold: #F2B544;
+    --gold-light: #FBD98A;
+    --cream: #FBF8F2;
+    --success: #5FAD56;
+    --border: #EEE8D6;
+    --muted: #9CA3AF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--navy); min-height: 100vh; }
+  h1,h2,h3 { font-family: 'Baloo 2', sans-serif; }
+
+  /* ===== HEADER ===== */
+  header {
+    background: var(--cream);
+    padding: 40px 20px 32px;
+    text-align: center;
+    border-bottom: 2px solid var(--border);
+  }
+  .school-crest {
+    width: 90px; height: 90px;
+    background: white;
+    border-radius: 50%;
+    margin: 0 auto 18px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 24px rgba(26,39,68,0.12);
+    overflow: hidden; padding: 6px;
+  }
+  .school-crest img { width: 100%; height: 100%; object-fit: contain; }
+  header h1 { font-size: 28px; color: var(--navy); margin-bottom: 4px; }
+  header h1 span { color: var(--orange); }
+  .school-tagline { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+  .header-badges { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+  .hbadge {
+    background: white; border: 2px solid var(--border);
+    border-radius: 20px; padding: 5px 12px;
+    font-size: 12px; font-weight: 600; color: var(--navy);
+  }
+
+  /* ===== PORTAL BUTTONS ===== */
+  .portal-strip {
+    background: white; border-bottom: 2px solid var(--border);
+    padding: 14px 20px; display: flex; justify-content: center; gap: 10px;
+  }
+  .portal-btn {
+    background: var(--orange-light); border: 2px solid var(--orange);
+    border-radius: 12px; padding: 10px 18px;
+    font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 13px;
+    cursor: pointer; color: var(--orange-dark); text-decoration: none;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .portal-btn:hover { background: var(--orange); color: white; }
+  .portal-btn.teacher { background: #FEF8E6; border-color: var(--gold); color: #7A5C00; }
+  .portal-btn.teacher:hover { background: var(--gold); color: var(--navy); }
+
+  /* ===== MODULE GRID ===== */
+  .section-wrap { max-width: 540px; margin: 0 auto; padding: 28px 20px 20px; }
+  .section-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--muted); margin-bottom: 14px;
+  }
+  .module-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+  .module-card {
+    background: white; border-radius: 18px; padding: 18px 14px;
+    box-shadow: 0 2px 10px rgba(26,39,68,0.06); text-decoration: none;
+    color: var(--navy); display: flex; flex-direction: column;
+    align-items: flex-start; gap: 10px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    border: 2px solid var(--border);
+  }
+  .module-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,39,68,0.1); border-color: var(--orange); }
+  .module-card.coming { opacity: 0.6; pointer-events: none; }
+  .mod-icon {
+    width: 46px; height: 46px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; font-size: 22px;
+    background: var(--orange-light);
+  }
+  .module-card h3 { font-size: 14px; margin: 0; line-height: 1.3; }
+  .module-card p { font-size: 11px; color: var(--muted); margin: 0; line-height: 1.4; }
+  .mod-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 8px; border-radius: 8px; }
+  .mod-tag.live { background: #EAF6E9; color: #1A5C17; }
+  .mod-tag.soon { background: #F3F4F6; color: var(--muted); }
+
+  /* ===== WHY SECTION ===== */
+  .why-section { background: var(--navy); color: white; padding: 36px 20px; }
+  .why-inner { max-width: 540px; margin: 0 auto; }
+  .why-inner h2 { font-size: 20px; margin-bottom: 18px; color: var(--gold); }
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .why-card { background: rgba(255,255,255,0.07); border-radius: 14px; padding: 14px; }
+  .why-card .icon { font-size: 20px; margin-bottom: 6px; }
+  .why-card h4 { font-family: 'Baloo 2', sans-serif; font-size: 13px; margin-bottom: 4px; }
+  .why-card p { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.5; }
+
+  /* ===== FOOTER ===== */
+  footer { background: white; border-top: 2px solid var(--border); padding: 24px 20px; text-align: center; }
+  footer p { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  footer strong { color: var(--navy); }
+  .footer-links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+  .footer-link { font-size: 12px; color: var(--orange-dark); text-decoration: none; font-weight: 600; }
+  .footer-link:hover { text-decoration: underline; }
+
+  @media (max-width: 380px) {
+    .module-grid { grid-template-columns: 1fr; }
+    .why-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="school-crest"><img src="logo.png" alt="Khanyisile School Crest"></div>
+  <h1>Future Ready<br><span>Learners</span></h1>
+  <p class="school-tagline">Khanyisile Pre & Primary School · Eswatini</p>
+  <div class="header-badges">
+    <span class="hbadge">💻 Coding</span>
+    <span class="hbadge">🤖 Robotics</span>
+    <span class="hbadge">🧠 AI Awareness</span>
+    <span class="hbadge">📱 Digital Literacy</span>
+  </div>
+</header>
+
+<div class="portal-strip">
+  <a href="teacher-dashboard.html" class="portal-btn teacher"><span data-i18n="teacher_view">Teacher View</span></a>
+  <a href="parent-portal.html" class="portal-btn"><span data-i18n="parent_portal">Parent Portal</span></a>
+  <a href="school-os.html" class="portal-btn teacher"><span data-i18n="school_os">School OS</span></a>
+</div>
+
+<div class="section-wrap">
+  <p class="section-label" data-i18n="home_subtitle">Choose your module</p>
+  <div class="module-grid">
+
+    <a href="index.html" class="module-card">
+      <div class="mod-icon">💻</div>
+      <div><h3 data-i18n="mod_coding">Coding for Kids</h3><p>Sequences, loops & computational thinking</p></div>
+      <span class="mod-tag live">✅ Week 1 & 2 Live</span>
+    </a>
+
+    <a href="robotics.html" class="module-card">
+      <div class="mod-icon">🤖</div>
+      <div><h3 data-i18n="mod_robotics">Robotics Explorers</h3><p>Path planning, sequences & real robots</p></div>
+      <span class="mod-tag live">✅ Week 1 & 2 Live</span>
+    </a>
+
+    <a href="ai-awareness.html" class="module-card">
+      <div class="mod-icon">🧠</div>
+      <div><h3 data-i18n="mod_ai">AI Awareness</h3><p>What AI is, how it learns & using it wisely</p></div>
+      <span class="mod-tag live">✅ Week 1 & 2 Live</span>
+    </a>
+
+    <a href="digital-literacy.html" class="module-card">
+      <div class="mod-icon">📱</div>
+      <div><h3 data-i18n="mod_digital">Digital Literacy</h3><p>Computer parts, typing & online safety</p></div>
+      <span class="mod-tag live">✅ Week 1 & 2 Live</span>
+    </a>
+
+    <div class="module-card coming">
+      <div class="mod-icon">🌍</div>
+      <div><h3>Internet & Safety</h3><p>How the internet works & staying safe</p></div>
+      <span class="mod-tag soon">🔜 <span data-i18n="coming_soon">Coming Soon</span></span>
+    </div>
+
+    <a href="teacher-guide.html" class="module-card">
+      <div class="mod-icon">📋</div>
+      <div><h3 data-i18n="teacher_guide">Teacher Guide</h3><p>Lesson plans for all 8 lessons, printable</p></div>
+      <span class="mod-tag live">✅ Print Ready</span>
+    </a>
+
+  </div>
+</div>
+
+<div class="why-section">
+  <div class="why-inner">
+    <h2>Why Future Ready Learners?</h2>
+    <div class="why-grid">
+      <div class="why-card"><div class="icon">🏫</div><h4>Built for Primary</h4><p>Age-appropriate for Grade 00–6 with playful, clear design.</p></div>
+      <div class="why-card"><div class="icon">📶</div><h4>Works on Mobile</h4><p>Designed first for phones — no app download needed.</p></div>
+      <div class="why-card"><div class="icon">📊</div><h4>Real-Time Tracking</h4><p>Teachers and parents see progress the moment it happens.</p></div>
+      <div class="why-card"><div class="icon">🛠️</div><h4>No Hardware Needed</h4><p>Every activity has an unplugged version — pilot it today.</p></div>
+      <div class="why-card"><div class="icon">🤖</div><h4>Robot-Ready</h4><p>Scales up to Bee-Bot or micro:bit when you're ready.</p></div>
+      <div class="why-card"><div class="icon">🇸🇿</div><h4>Made for Eswatini</h4><p>Contextualised for Southern African primary learners.</p></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>A <strong>Coach L Academy</strong> digital learning product</p>
+  <p>Proudly deployed for <strong>Khanyisile Pre & Primary School</strong>, Madonsa, Manzini</p>
+  <div class="footer-links">
+    <a href="index.html" class="footer-link">💻 Coding</a>
+    <a href="robotics.html" class="footer-link">🤖 Robotics</a>
+    <a href="ai-awareness.html" class="footer-link">🧠 AI Awareness</a>
+    <a href="digital-literacy.html" class="footer-link">📱 Digital Literacy</a>
+    <a href="school-os.html" class="footer-link"><span data-i18n="school_os">School OS</span></a>
+    <a href="teacher-dashboard.html" class="footer-link">📊 Teacher</a>
+    <a href="parent-portal.html" class="footer-link">👨‍👩‍👧 Parents</a>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="lang.js"></script>
+</body>
+</html>
