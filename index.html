@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Future Ready Learners — Future Ready Learners · South Africa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1A2744;
+    --navy-light: #28395E;
+    --gold: #F2B544;
+    --gold-light: #FBD98A;
+    --teal: #2EC4B6;
+    --teal-dark: #1F9D91;
+    --cream: #FBF8F2;
+    --success: #5FAD56;
+    --coral: #E8634A;
+    --path: #D8C9A8;
+    --ink: #1A2744;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, .display {
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* ===== TOP BAR ===== */
+  .topbar {
+    background: var(--navy);
+    color: white;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .topbar-badge {
+    width: 36px; height: 36px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .topbar-title {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.2;
+  }
+  .topbar-title span {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gold-light);
+    font-family: 'Inter', sans-serif;
+  }
+  .topbar-stats {
+    display: flex;
+    gap: 18px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .stat-pill {
+    background: var(--navy-light);
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* ===== LOGIN SCREEN ===== */
+  .login-screen {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .login-card {
+    background: white;
+    border-radius: 24px;
+    padding: 40px 32px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 12px 40px rgba(26,39,68,0.12);
+    text-align: center;
+  }
+  .login-card .crest {
+    width: 64px; height: 64px;
+    margin: 0 auto 16px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+  }
+  .login-card h1 {
+    font-size: 24px;
+    margin: 0 0 4px;
+    color: var(--navy);
+  }
+  .login-card p.sub {
+    color: #6B7280;
+    font-size: 14px;
+    margin: 0 0 28px;
+  }
+  .field-group { margin-bottom: 16px; text-align: left; }
+  .field-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--navy);
+  }
+  select, input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 2px solid #E5E0D3;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    background: var(--cream);
+    color: var(--ink);
+  }
+  select:focus, input:focus {
+    outline: none;
+    border-color: var(--teal);
+  }
+  .btn-primary {
+    width: 100%;
+    background: var(--teal);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .btn-primary:hover { background: var(--teal-dark); transform: translateY(-1px); }
+  .btn-primary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* ===== MAIN APP ===== */
+  .app { display: none; }
+  .app.active { display: block; }
+
+  .hero-strip {
+    background: linear-gradient(135deg, var(--navy), var(--navy-light));
+    color: white;
+    padding: 28px 20px;
+    text-align: center;
+  }
+  .hero-strip h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+  }
+  .hero-strip p {
+    margin: 0;
+    color: var(--gold-light);
+    font-size: 14px;
+  }
+
+  /* ===== THE TRAIL ===== */
+  .trail-wrap {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 36px 20px 60px;
+    position: relative;
+  }
+  .trail-line {
+    position: absolute;
+    left: 50%;
+    top: 40px;
+    bottom: 60px;
+    width: 6px;
+    background: repeating-linear-gradient(to bottom, var(--path) 0, var(--path) 10px, transparent 10px, transparent 20px);
+    transform: translateX(-50%);
+    border-radius: 4px;
+    z-index: 0;
+  }
+  .stone {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .stone:nth-child(even) { flex-direction: row-reverse; text-align: right; }
+  .stone-circle {
+    flex-shrink: 0;
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: white;
+    border: 4px solid var(--path);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .stone.unlocked .stone-circle { border-color: var(--teal); }
+  .stone.completed .stone-circle { border-color: var(--success); background: var(--success); }
+  .stone.locked .stone-circle { cursor: not-allowed; opacity: 0.5; }
+  .stone-circle:hover { transform: scale(1.06); }
+  .stone-circle.bounce { animation: bounceUnlock 0.5s ease; }
+  @keyframes bounceUnlock {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+  }
+  .stone-info {
+    background: white;
+    border-radius: 16px;
+    padding: 12px 16px;
+    flex: 1;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .stone-info h3 {
+    margin: 0 0 2px;
+    font-size: 15px;
+    color: var(--navy);
+  }
+  .stone-info p {
+    margin: 0;
+    font-size: 12px;
+    color: #6B7280;
+  }
+  .stone.locked .stone-info { opacity: 0.55; }
+
+  /* ===== LESSON MODAL ===== */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,39,68,0.55);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal-card {
+    background: white;
+    border-radius: 20px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 28px;
+  }
+  .modal-card h2 {
+    color: var(--navy);
+    margin-top: 0;
+  }
+  .modal-close {
+    float: right;
+    background: var(--cream);
+    border: none;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .lesson-text {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .lesson-text .highlight {
+    background: var(--gold-light);
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+  .activity-box {
+    background: var(--cream);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .activity-box h4 {
+    margin: 0 0 10px;
+    color: var(--teal-dark);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .quiz-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: white;
+    border: 2px solid #E5E0D3;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+  .quiz-option:hover { border-color: var(--teal); }
+  .quiz-option.correct { border-color: var(--success); background: #EAF6E9; }
+  .quiz-option.incorrect { border-color: var(--coral); background: #FCEAE6; }
+  .quiz-option:disabled { cursor: default; }
+
+  .sequence-blocks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .seq-block {
+    background: white;
+    border: 2px solid var(--teal);
+    color: var(--teal-dark);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: grab;
+    user-select: none;
+  }
+  .seq-dropzone {
+    min-height: 50px;
+    border: 2px dashed var(--path);
+    border-radius: 12px;
+    padding: 8px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    background: white;
+  }
+  .seq-dropzone .seq-block { cursor: pointer; }
+
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .btn-secondary {
+    background: white;
+    border: 2px solid var(--navy);
+    color: var(--navy);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .btn-complete {
+    background: var(--success);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .btn-complete:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* XP toast */
+  .xp-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--navy);
+    color: var(--gold-light);
+    padding: 12px 22px;
+    border-radius: 30px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 200;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  }
+  .xp-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  footer.app-footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #9CA3AF;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stone-circle.bounce { animation: none; }
+    .xp-toast { transition: none; }
+  }
+  .logo-img { width:100%; height:100%; object-fit:contain; border-radius:50%; }
+  .topbar-badge { overflow: hidden; padding: 3px; background: white !important; }
+  .topbar-badge img, .crest img, .sidebar-logo img, .logo-circle img, .crest-mini img, .logo-img {
+    width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 50%;
+  }
+  .crest { overflow: hidden; padding: 4px; background: white !important; }
+  .sidebar-logo { overflow: hidden; padding: 4px; background: white !important; }
+
+
+  .wiki-img { width:100%; max-width:340px; border-radius:12px; margin:12px auto; display:block; box-shadow:0 2px 10px rgba(0,0,0,0.1); }
+  .wiki-caption { text-align:center; font-size:11px; color:#9CA3AF; margin-bottom:12px; }
+
+
+  /* ═══ UNIFIED THEME — Future Ready Learners ═══ */
+  :root {
+    --navy: #1A2744;
+    --navy-light: #28395E;
+    --orange: #F97316;
+    --orange-dark: #C2560B;
+    --orange-light: #FEF0E6;
+    --gold: #F2B544;
+    --gold-light: #FBD98A;
+    --cream: #FBF8F2;
+    --success: #5FAD56;
+    --coral: #E8634A;
+    --teal: #2EC4B6;
+    --teal-dark: #1F9D91;
+    --path: #D8C9A8;
+    --border: #EEE8D6;
+    --muted: #9CA3AF;
+    --ink: #1A2744;
+  }
+  body { background: var(--cream) !important; }
+
+  /* Login cards */
+  .login-card, .login-box {
+    background: white;
+    border-radius: 24px;
+    padding: 40px 32px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 12px 40px rgba(26,39,68,0.12);
+    text-align: center;
+  }
+  .login-card .crest, .login-box .crest {
+    width: 72px; height: 72px;
+    background: white !important;
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    overflow: hidden; padding: 4px;
+  }
+  .login-card .crest img, .login-box .crest img {
+    width: 100%; height: 100%; object-fit: contain;
+  }
+  .login-card h1, .login-box h1 {
+    font-family: 'Baloo 2', sans-serif;
+    color: var(--navy); font-size: 26px; margin: 0 0 4px;
+  }
+  .login-card p.sub, .login-box p {
+    color: var(--muted); font-size: 14px; margin: 0 0 28px;
+  }
+
+  /* Inputs & selects */
+  select, input[type=text], input[type=date], input[type=email], textarea {
+    width: 100%;
+    padding: 13px 16px;
+    border-radius: 14px;
+    border: 2px solid var(--border);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    background: var(--cream);
+    color: var(--navy);
+    appearance: auto;
+  }
+  select:focus, input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
+  }
+
+  /* Primary button — orange throughout */
+  .btn-primary, .btn-login, .btn-teal, .refresh-btn, .btn-report {
+    background: var(--orange) !important;
+    color: white !important;
+    border: none !important;
+    padding: 14px 20px;
+    border-radius: 14px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+  .btn-primary:hover, .btn-login:hover, .btn-teal:hover, .refresh-btn:hover {
+    background: var(--orange-dark) !important;
+    transform: translateY(-1px);
+  }
+  .btn-primary:disabled, .btn-login:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; }
+  .btn-primary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+  /* Complete button stays green */
+  .btn-complete { background: var(--success) !important; }
+  .btn-complete:hover { background: #4a9445 !important; }
+
+  /* Secondary button */
+  .btn-secondary, .btn-outline {
+    background: white !important;
+    border: 2px solid var(--navy) !important;
+    color: var(--navy) !important;
+    border-radius: 12px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+
+  /* Topbar */
+  .topbar { background: var(--navy) !important; }
+  .topbar-badge {
+    background: white !important;
+    padding: 3px !important;
+    overflow: hidden;
+  }
+  .topbar-badge img { width: 100%; height: 100%; object-fit: contain; }
+
+  /* Stat pills */
+  .stat-pill { background: rgba(255,255,255,0.12) !important; }
+
+  /* Stone trail — orange accent */
+  .stone.unlocked .stone-circle { border-color: var(--orange) !important; }
+
+  /* Quiz options — orange hover */
+  .quiz-option:hover { border-color: var(--orange) !important; }
+
+  /* Activity box heading */
+  .activity-box h4 { color: var(--orange-dark) !important; }
+
+  /* Highlight spans */
+  .lesson-text .highlight {
+    background: var(--orange-light) !important;
+    color: var(--orange-dark) !important;
+  }
+
+  /* Hero strip */
+  .hero-strip { background: linear-gradient(135deg, var(--navy), var(--navy-light)) !important; }
+
+  /* Cards */
+  .card, .section-card, .stat-card {
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(26,39,68,0.07);
+  }
+
+  /* Modal close */
+  .modal-close { background: var(--cream) !important; }
+
+  /* Sidebar active item */
+  .nav-item.active { background: var(--orange) !important; }
+  .nav-item:hover { background: rgba(249,115,22,0.15) !important; }
+
+  /* XP toast */
+  .xp-toast { background: var(--navy) !important; color: var(--gold-light) !important; }
+
+  /* Sort/sequence blocks */
+  .seq-block, .sort-item, .safety-item {
+    border-color: var(--orange) !important;
+    color: var(--orange-dark) !important;
+  }
+  .match-part { border-color: var(--orange) !important; color: var(--orange-dark) !important; }
+  .match-part.selected { background: var(--orange) !important; color: white !important; }
+
+  /* Mode toggle (robotics) */
+  .mode-btn.active { background: var(--orange-light) !important; color: var(--orange-dark) !important; }
+
+  /* Report button */
+  .btn-report { background: var(--orange) !important; color: white !important; }
+
+  /* Field labels */
+  .field-group label, .form-field label, .field label { color: var(--navy); font-weight: 600; }
+
+
+  /* ── TTS BUTTON ── */
+  .tts-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; gap: 10px;
+  }
+  .tts-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--navy, #1A2744); color: white;
+    border: none; border-radius: 20px;
+    padding: 7px 14px; font-family: 'Baloo 2', sans-serif;
+    font-weight: 700; font-size: 12px; cursor: pointer;
+    flex-shrink: 0; transition: background 0.15s ease;
+  }
+  .tts-btn:hover  { background: #28395E; }
+  .tts-btn.speaking { background: var(--orange, #F97316); }
+  .tts-btn.speaking::before { content: '⏹ '; }
+  .tts-off { background: rgba(0,0,0,0.1) !important; color: #9CA3AF !important; }
+
+  /* ── HOME BUTTON ── */
+  .home-btn {
+    display: inline-flex; align-items: stretch; text-decoration: none;
+    border-radius: 10px; overflow: hidden;
+    box-shadow: 0 3px 0 rgba(0,0,0,0.15), 0 4px 10px rgba(26,39,68,0.25);
+    font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 13px;
+    transition: transform 0.1s ease;
+  }
+  .home-btn:active { transform: translateY(1px); }
+  .home-btn-icon {
+    background: var(--orange, #F97316); color: white;
+    padding: 7px 10px; display: flex; align-items: center; justify-content: center; font-size: 15px;
+  }
+  .home-btn-label {
+    background: #F3F4F6; color: var(--orange-dark, #C2560B);
+    padding: 7px 14px; display: flex; align-items: center;
+  }
+  .home-btn:hover .home-btn-icon { background: #F3F4F6; color: var(--orange, #F97316); }
+  .home-btn:hover .home-btn-label { background: var(--orange, #F97316); color: white; }
+
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div class="login-screen" id="loginScreen" style="position:relative;">
+  <a href="home.html" class="home-btn" style="position:absolute;top:16px;left:16px;z-index:10;">
+    <span class="home-btn-icon">🏠</span><span class="home-btn-label" data-i18n="home">Home</span>
+  </a>
+  <div class="login-card">
+    <div class="crest"><img src="logo.png" alt="Logo" class="logo-img"></div>
+    <h1>Future Ready Learners</h1>
+    <p class="sub">Future Ready Learners · South Africa</p>
+
+    <div class="field-group">
+      <label for="classSelect" data-i18n="choose_class">Choose your class</label>
+      <select id="classSelect">
+        <option value="">Loading classes…</option>
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label for="nameSelect" data-i18n="choose_name">Choose your name</label>
+      <select id="nameSelect" disabled>
+        <option value="">Pick your class first</option>
+      </select>
+    </div>
+
+    <button class="btn-primary" id="startBtn" disabled>Let's Go! 🚀</button>
+  </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<div class="app" id="mainApp">
+  <div class="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-badge"><img src="logo.png" alt="Logo" class="logo-img"></div>
+      <div class="topbar-title">
+        Future Ready Learners
+        <span data-i18n="mod_coding">Coding for Kids</span>
+      </div>
+    </div>
+    <div class="topbar-stats">
+      <a href="home.html" class="home-btn"><span class="home-btn-icon">🏠</span><span class="home-btn-label" data-i18n="home">Home</span></a>
+      <div class="stat-pill">⚡ <span id="xpDisplay">0</span> XP</div>
+      <div class="stat-pill">🏅 <span id="badgeCount">0</span></div>
+    </div>
+  </div>
+
+  <div class="hero-strip">
+    <h2>Hi <span id="studentNameDisplay">there</span>! 👋</h2>
+    <p><span data-i18n="follow_path">Follow the path. Every stone is a new adventure in computers.</span></p>
+  </div>
+
+  <div class="trail-wrap">
+    <div class="trail-line"></div>
+    <div id="trailStones"></div>
+  </div>
+
+  <div id="projectModeCard" style="max-width:480px;margin:0 auto 20px;padding:0 20px;display:none;">
+  <a href="project-mode.html" style="text-decoration:none;">
+    <div style="background:linear-gradient(135deg,#F97316,#F2B544);border-radius:20px;padding:20px;display:flex;align-items:center;gap:16px;box-shadow:0 6px 20px rgba(249,115,22,0.4);">
+      <div style="font-size:40px;">🚀</div>
+      <div>
+        <div style="font-family:Baloo 2,sans-serif;font-weight:800;font-size:18px;color:#1A2744;">Project Mode Unlocked!</div>
+        <div style="font-size:13px;color:rgba(26,39,68,0.8);margin-top:2px;">Build your own program with drag &amp; drop blocks →</div>
+      </div>
+    </div>
+  </a>
+</div>
+<footer class="app-footer">Future Ready Learners Programme · Coach L Academy</footer>
+</div>
+
+<!-- ===== LESSON MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-card" id="modalCard"></div>
+</div>
+
+<div class="xp-toast" id="xpToast"></div>
+
+<script src="config.js"></script>
+<script src="lang.js"></script>
+<script>
+// ============================================
+// LESSON CONTENT — Week 1 & 2: Coding for Kids
+// ============================================
+const LESSONS = [
+  {
+    id: 'w1l1',
+    week: 1,
+    icon: '💻',
+    get title() { return LANG.t('c_w1l1_title'); },
+    get blurb() { return LANG.t('c_w1l1_blurb'); },
+    type: 'reading-quiz',
+    content: `
+      <div style="background:white;border-radius:12px;padding:16px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,0.08);">
+  <p style="text-align:center;font-size:13px;font-weight:700;color:#1A2744;margin:0 0 12px">Parts of a Computer</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;">
+    <div style="background:#DCF5F2;border-radius:10px;padding:10px;text-align:center;"><div style="font-size:22px">🖥️</div><strong>Monitor</strong><br><span style="color:#6B7280">Shows everything on screen</span></div>
+    <div style="background:#EDE6FB;border-radius:10px;padding:10px;text-align:center;"><div style="font-size:22px">⌨️</div><strong>Keyboard</strong><br><span style="color:#6B7280">Type letters & numbers</span></div>
+    <div style="background:#FEF0E6;border-radius:10px;padding:10px;text-align:center;"><div style="font-size:22px">🖱️</div><strong>Mouse</strong><br><span style="color:#6B7280">Move & click things</span></div>
+    <div style="background:#FEF8E6;border-radius:10px;padding:10px;text-align:center;"><div style="font-size:22px">🧠</div><strong>CPU</strong><br><span style="color:#6B7280">The brain of the computer</span></div>
+    <div style="background:#EAF6E9;border-radius:10px;padding:10px;text-align:center;"><div style="font-size:22px">💾</div><strong>Hard Drive</strong><br><span style="color:#6B7280">Stores all your files</span></div>
+    <div style="background:#E0F2FE;border-radius:10px;padding:10px;text-align:center;"><div style="font-size:22px">🔊</div><strong>Speaker</strong><br><span style="color:#6B7280">Plays sounds & audio</span></div>
+  </div>
+</div>
+<img class="wiki-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/Personal_computer%2C_exploded_4.svg?width=480" alt="Desktop computer colourful diagram" onerror="this.onerror=null;this.src='https://commons.wikimedia.org/wiki/Special:FilePath/Laptop_computer.jpg?width=400'">
+<p class="wiki-caption">A desktop computer — monitor, tower, keyboard and mouse — Wikimedia Commons</p>
+<p class="wiki-caption" style="color:#1A2744;font-weight:600;">Labelled parts: monitor · tower/case · keyboard · mouse · motherboard · CPU · memory (RAM) · power supply · hard drive</p>
+<img class="wiki-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/Laptop_computer.jpg?width=400" alt="Laptop computer" onerror="this.onerror=null;this.src='https://commons.wikimedia.org/wiki/Special:FilePath/QWERTY_keyboard.jpg?width=400'">
+<p class="wiki-caption">A laptop — all the same parts but portable! — Wikimedia Commons</p>
+<p>A computer is a machine that follows <span class="highlight">instructions</span> — step by step, exactly as it's told.</p>
+      <p>It can't think for itself. It needs a human to tell it exactly what to do, in exactly the right order. That's what coding is: giving a computer clear instructions.</p>
+      <p>Computers are everywhere — in phones, in cars, in traffic lights, even in some toys!</p>
+    `,
+    get quiz() { return {
+      question: LANG.t('c_w1l1_q'),
+      options: [LANG.t('c_w1l1_a0'), LANG.t('c_w1l1_a1'), LANG.t('c_w1l1_a2')],
+      correctIndex: 0
+    }; }
+  },
+  {
+    id: 'w1l2',
+    week: 1,
+    icon: '🧩',
+    get title() { return LANG.t('c_w1l2_title'); },
+    get blurb() { return LANG.t('c_w1l2_blurb'); },
+    type: 'sequence',
+    content: `
+      <div style="background:white;border-radius:12px;padding:16px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,0.08);text-align:center;">
+  <p style="font-size:13px;font-weight:700;color:#1A2744;margin:0 0 12px">A Sequence — Steps in Order</p>
+  <div style="display:inline-flex;flex-direction:column;align-items:center;gap:4px;font-size:13px;">
+    <div style="background:#1A2744;color:white;padding:8px 24px;border-radius:8px;">Step 1: Pick up toothbrush</div>
+    <div style="font-size:18px;color:#9CA3AF;">↓</div>
+    <div style="background:#2EC4B6;color:white;padding:8px 24px;border-radius:8px;">Step 2: Put on toothpaste</div>
+    <div style="font-size:18px;color:#9CA3AF;">↓</div>
+    <div style="background:#8B5CF6;color:white;padding:8px 24px;border-radius:8px;">Step 3: Brush teeth</div>
+    <div style="font-size:18px;color:#9CA3AF;">↓</div>
+    <div style="background:#5FAD56;color:white;padding:8px 24px;border-radius:8px;">Step 4: Rinse mouth ✓</div>
+  </div>
+  <p style="font-size:11px;color:#9CA3AF;margin:10px 0 0">Wrong order = wrong result!</p>
+</div>
+<img class="wiki-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/LampFlowchart.svg?width=250" alt="Lamp flowchart sequencing diagram" onerror="this.onerror=null;this.src='https://commons.wikimedia.org/wiki/Special:FilePath/Flowchart_en.svg?width=400'">
+<p class="wiki-caption">A flowchart — each decision box is a step in order — Wikimedia Commons</p>
+<img class="wiki-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/Flowchart_en.svg?width=400" alt="Simple algorithm example" onerror="this.onerror=null;this.src='https://commons.wikimedia.org/wiki/Special:FilePath/Social_Network_Analysis_Visualization.png?width=400'">
+<p class="wiki-caption">An algorithm is a sequence — just like a recipe! — Wikimedia Commons</p>
+<p>A <span class="highlight">sequence</span> is a list of steps done in order. If you do the steps in the wrong order, things go wrong!</p>
+      <p>Let's practise: put these steps for "brushing your teeth" in the correct order by tapping them in sequence.</p>
+    `,
+    get blocks() { return [LANG.t('seq_toothpaste'), LANG.t('seq_pickup'), LANG.t('seq_brush'), LANG.t('seq_rinse')]; },
+    correctOrder: [1, 0, 2, 3]
+  },
+  {
+    id: 'w2l1',
+    week: 2,
+    icon: '🔁',
+    get title() { return LANG.t('c_w2l1_title'); },
+    get blurb() { return LANG.t('c_w2l1_blurb'); },
+    type: 'reading-quiz',
+    content: `
+      <div style="background:white;border-radius:12px;padding:16px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,0.08);text-align:center;">
+  <p style="font-size:13px;font-weight:700;color:#1A2744;margin:0 0 12px">How a Loop Works</p>
+  <div style="display:inline-flex;flex-direction:column;align-items:center;gap:4px;font-size:13px;">
+    <div style="background:#1A2744;color:white;padding:8px 20px;border-radius:8px;">▶ Start</div>
+    <div style="font-size:18px;color:#9CA3AF;">↓</div>
+    <div style="background:#2EC4B6;color:white;padding:8px 20px;border-radius:8px;">Do the instruction</div>
+    <div style="font-size:18px;color:#9CA3AF;">↓</div>
+    <div style="background:#F2B544;color:#1A2744;padding:8px 20px;border-radius:8px;">Done enough times?</div>
+    <div style="display:flex;gap:20px;align-items:flex-start;margin-top:4px;">
+      <div style="text-align:center;"><div style="color:#5FAD56;font-weight:700;">YES ✓</div><div style="background:#5FAD56;color:white;padding:6px 14px;border-radius:8px;margin-top:4px;">⏹ Stop</div></div>
+      <div style="text-align:center;"><div style="color:#E8634A;font-weight:700;">NO ↩</div><div style="font-size:12px;color:#9CA3AF;margin-top:4px;">go back up</div></div>
+    </div>
+  </div>
+</div>
+<img class="wiki-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/While-loop-diagram.svg?width=280" alt="While loop diagram" onerror="this.onerror=null;this.src='https://commons.wikimedia.org/wiki/Special:FilePath/Flowchart_en.svg?width=400'">
+<p class="wiki-caption">A while loop — keeps repeating until the condition is false — Wikimedia Commons</p>
+<img class="wiki-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/For-loop-diagram.svg?width=300" alt="For loop flowchart" onerror="this.onerror=null;this.src='https://commons.wikimedia.org/wiki/Special:FilePath/Flowchart_en.svg?width=400'">
+<p class="wiki-caption">A for loop — repeat exactly N times then stop — Wikimedia Commons</p>
+<p>A <span class="highlight">loop</span> is when a computer repeats the same instruction over and over, without you having to write it out every single time.</p>
+      <p>Think about clapping 5 times — instead of saying "clap" five separate times, a loop says "clap, 5 times" in one short instruction!</p>
+    `,
+    get quiz() { return {
+      question: LANG.t('c_w2l1_q'),
+      options: [LANG.t('c_w2l1_a0'), LANG.t('c_w2l1_a1'), LANG.t('c_w2l1_a2')],
+      correctIndex: 1
+    }; }
+  },
+  {
+    id: 'w2l2',
+    week: 2,
+    icon: '🤖',
+    get title() { return LANG.t('c_w2l2_title'); },
+    get blurb() { return LANG.t('c_w2l2_blurb'); },
+    type: 'sequence',
+    content: `
+      <p>Today YOU are the robot! Your teacher (or a partner) will give you a sequence of moves. Drag the move-blocks below into the order you think will get the robot from the door to the desk.</p>
+    `,
+    get blocks() { return [LANG.t('seq_turn_right'), LANG.t('seq_forward'), LANG.t('seq_turn_left'), LANG.t('seq_forward2')]; },
+    correctOrder: [1, 0, 3, 2]
+  }
+];
+
+const BADGE_MILESTONES = {
+  2: LANG.t('badge_first_steps'),
+  4: LANG.t('badge_seq_star')
+};
+
+// ============================================
+// STATE
+// ============================================
+let currentStudent = null;
+let studentsData = [];
+let completedLessons = new Set();
+let totalXP = 0;
+let earnedBadges = [];
+let activeQuizAnswered = false;
+let activeSequenceOrder = [];
+
+// ============================================
+// INIT: LOAD STUDENTS FOR LOGIN
+// ============================================
+async function loadStudents() {
+  const sel = document.getElementById('classSelect');
+  sel.innerHTML = `<option value="">${LANG.t('loading')}</option>`;
+  try {
+    const res = await fetch(API_URL + '?action=getStudents');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    studentsData = data.students || [];
+    const classes = [...new Set(studentsData.map(s => s.className))];
+    if (classes.length === 0) {
+      sel.innerHTML = '<option value="">No students enrolled yet — add rows to the Students tab</option>';
+      return;
+    }
+    sel.innerHTML = `<option value="">${LANG.t('select_class')}</option>` +
+      classes.map(c => `<option value="${c}">${c}</option>`).join('');
+  } catch(err) {
+    console.error('loadStudents error:', err);
+    sel.innerHTML = `<option value="">${LANG.t('cannot_connect')} (${err.message})</option>`;
+    // Auto retry after 4 seconds
+    setTimeout(loadStudents, 4000);
+  }
+}
+
+function populateClassDropdown() {
+  const classes = [...new Set(studentsData.map(s => s.className))];
+  const sel = document.getElementById('classSelect');
+  sel.innerHTML = '<option value="">Select a class…</option>' +
+    classes.map(c => `<option value="${c}">${c}</option>`).join('');
+  sel.disabled = false;
+}
+
+document.getElementById('classSelect').addEventListener('change', (e) => {
+  const className = e.target.value;
+  const nameSel = document.getElementById('nameSelect');
+  if (!className) {
+    nameSel.innerHTML = '<option value="">Pick your class first</option>';
+    nameSel.disabled = true;
+    document.getElementById('startBtn').disabled = true;
+    return;
+  }
+  const studentsInClass = studentsData.filter(s => s.className === className);
+  nameSel.innerHTML = '<option value="">Select your name…</option>' +
+    studentsInClass.map(s => `<option value="${s.studentId}">${s.name}</option>`).join('');
+  nameSel.disabled = false;
+});
+
+document.getElementById('nameSelect').addEventListener('change', (e) => {
+  document.getElementById('startBtn').disabled = !e.target.value;
+});
+
+document.getElementById('startBtn').addEventListener('click', startSession);
+
+async function startSession() {
+  const studentId = document.getElementById('nameSelect').value;
+  const student = studentsData.find(s => s.studentId === studentId);
+  if (!student) return;
+
+  currentStudent = student;
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainApp').classList.add('active');
+  document.getElementById('studentNameDisplay').textContent = student.name.split(' ')[0];
+
+  await loadProgress();
+  renderTrail();
+}
+
+// ============================================
+// PROGRESS LOADING
+// ============================================
+async function loadProgress() {
+  try {
+    const res = await fetch(`${API_URL}?action=getProgress&studentId=${currentStudent.studentId}`);
+    const data = await res.json();
+    totalXP = data.totalXP || 0;
+    earnedBadges = data.badges || [];
+    completedLessons = new Set(
+      (data.records || []).filter(r => r.completed === 'Y').map(r => r.activityType)
+    );
+  } catch (err) {
+    console.error('Could not load progress:', err);
+  }
+  updateStatsDisplay();
+}
+
+function updateStatsDisplay() {
+  document.getElementById('xpDisplay').textContent = totalXP;
+  document.getElementById('badgeCount').textContent = earnedBadges.length;
+}
+
+// ============================================
+// TRAIL RENDERING
+// ============================================
+function renderTrail() {
+  // Show Project Mode unlock card when all lessons completed
+  const pmCard = document.getElementById('projectModeCard');
+  if (pmCard) pmCard.style.display = completedLessons.size >= LESSONS.length ? 'block' : 'none';
+  const container = document.getElementById('trailStones');
+  container.innerHTML = LESSONS.map((lesson, idx) => {
+    const isCompleted = completedLessons.has(lesson.id);
+    const isUnlocked = idx === 0 || completedLessons.has(LESSONS[idx - 1].id);
+    const state = isCompleted ? 'completed' : (isUnlocked ? 'unlocked' : 'locked');
+    const circleContent = isCompleted ? '✓' : lesson.icon;
+
+    return `
+      <div class="stone ${state}" data-lesson="${lesson.id}">
+        <div class="stone-circle" onclick="${state !== 'locked' ? `openLesson('${lesson.id}')` : ''}">${circleContent}</div>
+        <div class="stone-info">
+          <h3>Week ${lesson.week} · ${lesson.title}</h3>
+          <p>${lesson.blurb}</p>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ============================================
+// LESSON MODAL
+// ============================================
+function openLesson(lessonId) {
+  const lesson = LESSONS.find(l => l.id === lessonId);
+  if (!lesson) return;
+
+  activeQuizAnswered = false;
+  activeSequenceOrder = [];
+
+  let bodyHtml = `<div class="lesson-text">${lesson.content}</div>`;
+
+  if (lesson.type === 'reading-quiz') {
+    bodyHtml += `
+      <div class="activity-box">
+        <h4>Quick Check</h4>
+        <p style="margin:0 0 12px; font-weight:600;">${lesson.quiz.question}</p>
+        <div id="quizOptions">
+          ${lesson.quiz.options.map((opt, i) =>
+            `<button class="quiz-option" onclick="answerQuiz(${i}, ${lesson.quiz.correctIndex})">${opt}</button>`
+          ).join('')}
+        </div>
+      </div>
+    `;
+  } else if (lesson.type === 'sequence') {
+    bodyHtml += `
+      <div class="activity-box">
+        <h4>Drag in order (tap to add, tap again in dropzone to remove)</h4>
+        <div class="seq-dropzone" id="seqDropzone"></div>
+        <p style="font-size:12px; color:#6B7280; margin:10px 0 6px;">Available steps:</p>
+        <div class="sequence-blocks" id="seqBlocks">
+          ${lesson.blocks.map((b, i) =>
+            `<div class="seq-block" data-idx="${i}" onclick="addToSequence(${i}, this)">${b}</div>`
+          ).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  bodyHtml += `
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal()">Close</button>
+      <button class="btn-complete" id="completeBtn" disabled onclick="completeLesson('${lesson.id}')">Mark Complete ✓</button>
+    </div>
+  `;
+
+  document.getElementById('modalCard').innerHTML = `
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="tts-bar">
+      <h2 style="margin:0">${lesson.icon} ${lesson.title}</h2>
+      <button class="tts-btn" id="ttsBtn" onclick="toggleTTS(this, lesson.title, bodyHtml)">
+        🔊 Read Aloud
+      </button>
+    </div>
+    ${bodyHtml}
+  `;
+  document.getElementById('modalOverlay').classList.add('active');
+  window._currentLesson = lesson;
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+}
+
+function answerQuiz(selectedIdx, correctIdx) {
+  if (activeQuizAnswered) return;
+  activeQuizAnswered = true;
+  const buttons = document.querySelectorAll('#quizOptions .quiz-option');
+  buttons.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === correctIdx) btn.classList.add('correct');
+    else if (i === selectedIdx) btn.classList.add('incorrect');
+  });
+  document.getElementById('completeBtn').disabled = false;
+}
+
+function addToSequence(idx, blockEl) {
+  if (blockEl.dataset.used === 'true') {
+    // remove from dropzone, return to pool
+    activeSequenceOrder = activeSequenceOrder.filter(i => i !== idx);
+    blockEl.dataset.used = 'false';
+    renderDropzone();
+    return;
+  }
+  blockEl.dataset.used = 'true';
+  activeSequenceOrder.push(idx);
+  renderDropzone();
+
+  const lesson = window._currentLesson;
+  if (activeSequenceOrder.length === lesson.blocks.length) {
+    document.getElementById('completeBtn').disabled = false;
+  }
+}
+
+function renderDropzone() {
+  const lesson = window._currentLesson;
+  const zone = document.getElementById('seqDropzone');
+  zone.innerHTML = activeSequenceOrder.map(idx =>
+    `<div class="seq-block" onclick="removeFromSequence(${idx})">${lesson.blocks[idx]}</div>`
+  ).join('') || '<span style="color:#9CA3AF; font-size:13px;">Tap steps below to add them here</span>';
+}
+
+function removeFromSequence(idx) {
+  activeSequenceOrder = activeSequenceOrder.filter(i => i !== idx);
+  document.querySelector(`.seq-block[data-idx="${idx}"]`).dataset.used = 'false';
+  renderDropzone();
+  document.getElementById('completeBtn').disabled = true;
+}
+
+// ============================================
+// COMPLETE LESSON → LOG TO BACKEND
+// ============================================
+async function completeLesson(lessonId) {
+  const lesson = LESSONS.find(l => l.id === lessonId);
+  const xpEarned = 20;
+
+  completedLessons.add(lessonId);
+  // Save to localStorage so Project Mode can check unlock status
+  localStorage.setItem('frl_coding_completed', JSON.stringify([...completedLessons]));
+  totalXP += xpEarned;
+  updateStatsDisplay();
+  closeModal();
+  renderTrail();
+  showXpToast(`+${xpEarned} ${LANG.t('xp_earned')} — ${LANG.t('great_job')}`);
+
+  // bounce animation on the newly unlocked next stone
+  setTimeout(() => {
+    const idx = LESSONS.findIndex(l => l.id === lessonId);
+    const nextStone = document.querySelectorAll('.stone-circle')[idx + 1];
+    if (nextStone) {
+      nextStone.classList.add('bounce');
+      setTimeout(() => nextStone.classList.remove('bounce'), 500);
+    }
+  }, 100);
+
+  try {
+    try {
+      await apiGet({ action:'logProgress', studentId:currentStudent.studentId,
+        module:'Coding for Kids', week:lesson.week, activityType:lessonId,
+        score:'', xp:xpEarned, completed:'true' });
+    } catch(e) { console.error('Could not save progress:', e); }
+  } catch (err) {
+    console.error('Could not save progress:', err);
+  }
+
+  // badge check
+  const milestoneBadge = BADGE_MILESTONES[completedLessons.size];
+  if (milestoneBadge && !earnedBadges.includes(milestoneBadge)) {
+    earnedBadges.push(milestoneBadge);
+    updateStatsDisplay();
+    setTimeout(() => showXpToast(`🏅 Badge earned: ${milestoneBadge}!`), 1200);
+    try {
+      try {
+        await apiGet({ action:'awardBadge', studentId:currentStudent.studentId, badgeName:milestoneBadge });
+      } catch(e) { console.error('Could not save badge:', e); }
+    } catch (err) {
+      console.error('Could not save badge:', err);
+    }
+  }
+}
+
+function showXpToast(message) {
+  const toast = document.getElementById('xpToast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2600);
+}
+
+// ============================================
+// START
+// ============================================
+
+// ── API helpers — all calls use GET to avoid CORS preflight ─────────────
+async function apiGet(params) {
+  const qs = Object.entries(params).map(([k,v]) => k + '=' + encodeURIComponent(v)).join('&');
+  const res = await fetch(API_URL + '?' + qs);
+  return res.json();
+}
+
+
+// ── TTS HELPER ───────────────────────────────────────────
+function toggleTTS(btn, title, bodyHtml) {
+  if (TTS.speaking) {
+    TTS.stop();
+    btn.classList.remove('speaking');
+    btn.innerHTML = '🔊 Read Aloud';
+    return;
+  }
+
+  if (!('speechSynthesis' in window)) {
+    showXpToast('Text-to-speech is not supported in this browser');
+    return;
+  }
+
+  btn.classList.add('speaking');
+  btn.innerHTML = '⏹ Stop';
+  TTS.speaking = true;
+
+  const speakNow = (voices) => {
+    if (!TTS.speaking) return; // user tapped Stop while we were waiting on voices
+    if (!voices.length) {
+      TTS.speaking = false;
+      btn.classList.remove('speaking');
+      btn.innerHTML = '🔊 Read Aloud';
+      showXpToast('No text-to-speech voice is installed on this device — check Settings → Accessibility → Text-to-speech');
+      return;
+    }
+    // Strip HTML for clean reading
+    const clean = (title + '. ' + bodyHtml).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    const utter = new SpeechSynthesisUtterance(clean);
+    // Keep a reference on window so Chrome/Android can't garbage-collect
+    // the utterance mid-speech (a well-known silent-failure bug).
+    window._activeUtterance = utter;
+    utter.lang  = TTS.LANG_CODES[LANG.current] || 'en-ZA';
+    utter.rate  = 0.88;
+    utter.pitch = 1.05;
+    const match  = voices.find(v => v.lang === utter.lang)
+      || voices.find(v => v.lang.startsWith(utter.lang.split('-')[0]))
+      || voices.find(v => v.lang.startsWith('en'));
+    if (match) utter.voice = match;
+    utter.onend = () => {
+      TTS.speaking = false;
+      btn.classList.remove('speaking');
+      btn.innerHTML = '🔊 Read Aloud';
+    };
+    utter.onerror = () => {
+      TTS.speaking = false;
+      btn.classList.remove('speaking');
+      btn.innerHTML = '🔊 Read Aloud';
+      showXpToast('Text-to-speech failed to play on this device');
+    };
+    speechSynthesis.cancel();
+    speechSynthesis.speak(utter);
+  };
+
+  const existing = speechSynthesis.getVoices();
+  if (existing.length) {
+    speakNow(existing);
+  } else {
+    // Chrome sometimes loads the voice list asynchronously — give it one chance
+    let done = false;
+    const onVoices = () => {
+      if (done) return;
+      done = true;
+      speechSynthesis.removeEventListener('voiceschanged', onVoices);
+      speakNow(speechSynthesis.getVoices());
+    };
+    speechSynthesis.addEventListener('voiceschanged', onVoices);
+    setTimeout(() => {
+      if (done) return;
+      done = true;
+      speechSynthesis.removeEventListener('voiceschanged', onVoices);
+      speakNow(speechSynthesis.getVoices());
+    }, 600);
+  }
+}
+
+// Stop TTS when modal closes
+const _origCloseModal = typeof closeModal === 'function' ? closeModal : null;
+function closeModal() {
+  TTS.stop();
+  const btn = document.getElementById('ttsBtn');
+  if (btn) { btn.classList.remove('speaking'); btn.innerHTML = '🔊 Read Aloud'; }
+  document.getElementById('modalOverlay').classList.remove('active');
+}
+
+document.addEventListener('langchange', () => {
+  renderTrail();
+  LANG.apply();
+});
+loadStudents();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<script>
+  // Apply Twemoji after DOM loads and after any dynamic content changes
+  function applyTwemoji() {
+    twemoji.parse(document.body, {
+      folder: 'svg',
+      ext: '.svg',
+      base: 'https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/'
+    });
+  }
+  document.addEventListener('DOMContentLoaded', applyTwemoji);
+  // Re-apply after language changes (which re-render content)
+  document.addEventListener('langchange', () => setTimeout(applyTwemoji, 100));
+</script>
+</body>
+</html>

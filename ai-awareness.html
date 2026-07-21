@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Awareness — Future Ready Learners — Khanyisile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1A2744;
+    --navy-light: #28395E;
+    --gold: #F2B544;
+    --gold-light: #FBD98A;
+    --teal: #2EC4B6;
+    --cream: #FBF8F2;
+    --success: #5FAD56;
+    --coral: #E8634A;
+    --path: #D8C9A8;
+    --ai: #F97316;
+    --ai-dark: #C2560B;
+    --ai-light: #FEF0E6;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Inter', sans-serif; background: var(--cream); color: var(--navy); min-height: 100vh; }
+  h1,h2,h3 { font-family: 'Baloo 2', sans-serif; }
+
+  .topbar { background: var(--navy); color: white; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; }
+  .topbar-brand { display: flex; align-items: center; gap: 10px; }
+  .topbar-badge { width: 36px; height: 36px; background: var(--ai); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; display:flex; align-items:center; justify-content:center; }
+  .topbar-title { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 16px; line-height: 1.2; }
+  .topbar-title span { display: block; font-size: 11px; font-weight: 500; color: var(--gold-light); font-family: 'Inter', sans-serif; }
+  .stat-pill { background: var(--navy-light); padding: 6px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; }
+  .topbar-stats { display: flex; gap: 12px; align-items: center; }
+
+  /* ── HOME BUTTON ── */
+  .home-btn {
+    display: inline-flex; align-items: stretch; text-decoration: none;
+    border-radius: 10px; overflow: hidden;
+    box-shadow: 0 3px 0 rgba(0,0,0,0.15), 0 4px 10px rgba(26,39,68,0.25);
+    font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 13px;
+    transition: transform 0.1s ease;
+  }
+  .home-btn:active { transform: translateY(1px); }
+  .home-btn-icon {
+    background: var(--orange, #F97316); color: white;
+    padding: 7px 10px; display: flex; align-items: center; justify-content: center; font-size: 15px;
+  }
+  .home-btn-label {
+    background: #F3F4F6; color: var(--orange-dark, #C2560B);
+    padding: 7px 14px; display: flex; align-items: center;
+  }
+  .home-btn:hover .home-btn-icon { background: #F3F4F6; color: var(--orange, #F97316); }
+  .home-btn:hover .home-btn-label { background: var(--orange, #F97316); color: white; }
+
+  /* LOGIN */
+  .login-screen { min-height: 90vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .login-card { background: white; border-radius: 24px; padding: 40px 32px; max-width: 420px; width: 100%; box-shadow: 0 12px 40px rgba(26,39,68,0.12); text-align: center; }
+  .login-card .crest { width: 64px; height: 64px; margin: 0 auto 16px; background: linear-gradient(135deg, var(--ai), #FBBF24); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; }
+  .login-card h1 { font-size: 24px; margin: 0 0 4px; }
+  .login-card p.sub { color: #6B7280; font-size: 14px; margin: 0 0 28px; }
+  .field-group { margin-bottom: 16px; text-align: left; }
+  .field-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  select { width: 100%; padding: 12px 14px; border-radius: 12px; border: 2px solid #E5E0D3; font-family: 'Inter', sans-serif; font-size: 15px; background: var(--cream); color: var(--navy); }
+  select:focus { outline: none; border-color: var(--ai); }
+  .btn-primary { width: 100%; background: var(--ai); color: white; border: none; padding: 14px; border-radius: 12px; font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 8px; }
+  .btn-primary:hover { background: var(--ai-dark); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* APP */
+  .app { display: none; }
+  .app.active { display: block; }
+  .hero-strip { background: linear-gradient(135deg, var(--navy), var(--navy-light)); color: white; padding: 28px 20px; text-align: center; }
+  .hero-strip h2 { margin: 0 0 6px; font-size: 22px; }
+  .hero-strip p { margin: 0; color: var(--gold-light); font-size: 14px; }
+
+  /* TRAIL */
+  .trail-wrap { max-width: 480px; margin: 0 auto; padding: 36px 20px 60px; position: relative; }
+  .trail-line { position: absolute; left: 50%; top: 40px; bottom: 60px; width: 6px; background: repeating-linear-gradient(to bottom, var(--path) 0, var(--path) 10px, transparent 10px, transparent 20px); transform: translateX(-50%); border-radius: 4px; z-index: 0; }
+  .stone { position: relative; z-index: 1; display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+  .stone:nth-child(even) { flex-direction: row-reverse; text-align: right; }
+  .stone-circle { flex-shrink: 0; width: 64px; height: 64px; border-radius: 50%; background: white; border: 4px solid var(--path); display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease; }
+  .stone.unlocked .stone-circle { border-color: var(--ai); }
+  .stone.completed .stone-circle { border-color: var(--success); background: var(--success); }
+  .stone.locked .stone-circle { cursor: not-allowed; opacity: 0.5; }
+  .stone-circle:hover { transform: scale(1.06); }
+  .stone-circle.bounce { animation: bounceUnlock 0.5s ease; }
+  @keyframes bounceUnlock { 0%{transform:scale(1)} 40%{transform:scale(1.25)} 100%{transform:scale(1)} }
+  .stone-info { background: white; border-radius: 16px; padding: 12px 16px; flex: 1; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .stone-info h3 { margin: 0 0 2px; font-size: 15px; }
+  .stone-info p { margin: 0; font-size: 12px; color: #6B7280; }
+  .stone.locked .stone-info { opacity: 0.55; }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,39,68,0.55); z-index: 100; align-items: center; justify-content: center; padding: 16px; }
+  .modal-overlay.active { display: flex; }
+  .modal-card { background: white; border-radius: 20px; max-width: 540px; width: 100%; max-height: 88vh; overflow-y: auto; padding: 28px; }
+  .modal-card h2 { color: var(--navy); margin-top: 0; }
+  .modal-close { float: right; background: var(--cream); border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; }
+  .lesson-text { font-size: 15px; line-height: 1.6; margin-bottom: 20px; }
+  .lesson-text .highlight { background: var(--ai-light); padding: 2px 6px; border-radius: 6px; font-weight: 600; color: var(--ai-dark); }
+
+  .activity-box { background: var(--cream); border-radius: 14px; padding: 18px; margin-bottom: 16px; }
+  .activity-box h4 { margin: 0 0 10px; color: var(--ai-dark); font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .quiz-option { display: block; width: 100%; text-align: left; background: white; border: 2px solid #E5E0D3; border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; font-family: 'Inter', sans-serif; font-size: 14px; cursor: pointer; transition: border-color 0.15s ease; }
+  .quiz-option:hover { border-color: var(--ai); }
+  .quiz-option.correct { border-color: var(--success); background: #EAF6E9; }
+  .quiz-option.incorrect { border-color: var(--coral); background: #FCEAE6; }
+  .quiz-option:disabled { cursor: default; }
+
+  /* Sort activity */
+  .sort-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .sort-col h5 { margin: 0 0 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .sort-col.ai-col h5 { color: var(--ai-dark); }
+  .sort-col.human-col h5 { color: var(--navy); }
+  .sort-drop { min-height: 60px; background: white; border: 2px dashed var(--path); border-radius: 12px; padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+  .sort-items { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+  .sort-item { background: white; border: 2px solid var(--ai); color: var(--ai-dark); border-radius: 10px; padding: 8px 12px; font-size: 13px; font-weight: 600; cursor: pointer; user-select: none; }
+  .sort-item.placed-ai { border-color: var(--ai); background: var(--ai-light); }
+  .sort-item.placed-human { border-color: var(--navy); background: #EEF2FF; color: var(--navy); }
+
+  /* Reflection */
+  .reflection-area { width: 100%; min-height: 80px; border-radius: 12px; border: 2px solid #E5E0D3; font-family: 'Inter', sans-serif; font-size: 14px; padding: 12px; resize: vertical; background: white; }
+  .reflection-area:focus { outline: none; border-color: var(--ai); }
+
+  .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
+  .btn-secondary { background: white; border: 2px solid var(--navy); color: var(--navy); padding: 10px 20px; border-radius: 10px; font-family: 'Baloo 2', sans-serif; font-weight: 700; cursor: pointer; }
+  .btn-complete { background: var(--success); border: none; color: white; padding: 10px 20px; border-radius: 10px; font-family: 'Baloo 2', sans-serif; font-weight: 700; cursor: pointer; }
+  .btn-complete:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .xp-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--navy); color: var(--gold-light); padding: 12px 22px; border-radius: 30px; font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 14px; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 200; box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+  .xp-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  footer.app-footer { text-align: center; padding: 20px; font-size: 12px; color: #9CA3AF; }
+  @media (prefers-reduced-motion: reduce) { .stone-circle.bounce { animation: none; } .xp-toast { transition: none; } }
+  .logo-img { width:100%; height:100%; object-fit:contain; border-radius:50%; }
+  .topbar-badge { overflow: hidden; padding: 3px; background: white !important; }
+  .topbar-badge img, .crest img, .sidebar-logo img, .logo-circle img, .crest-mini img, .logo-img {
+    width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 50%;
+  }
+  .crest { overflow: hidden; padding: 4px; background: white !important; }
+  .sidebar-logo { overflow: hidden; padding: 4px; background: white !important; }
+
+
+  .wiki-img { width:100%; max-width:340px; border-radius:12px; margin:12px auto; display:block; box-shadow:0 2px 10px rgba(0,0,0,0.1); }
+  .wiki-caption { text-align:center; font-size:11px; color:#9CA3AF; margin-bottom:12px; }
+
+
+  /* ═══ UNIFIED THEME — Future Ready Learners ═══ */
+  :root {
+    --navy: #1A2744;
+    --navy-light: #28395E;
+    --orange: #F97316;
+    --orange-dark: #C2560B;
+    --orange-light: #FEF0E6;
+    --gold: #F2B544;
+    --gold-light: #FBD98A;
+    --cream: #FBF8F2;
+    --success: #5FAD56;
+    --coral: #E8634A;
+    --teal: #2EC4B6;
+    --teal-dark: #1F9D91;
+    --path: #D8C9A8;
+    --border: #EEE8D6;
+    --muted: #9CA3AF;
+    --ink: #1A2744;
+  }
+  body { background: var(--cream) !important; }
+
+  /* Login cards */
+  .login-card, .login-box {
+    background: white;
+    border-radius: 24px;
+    padding: 40px 32px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 12px 40px rgba(26,39,68,0.12);
+    text-align: center;
+  }
+  .login-card .crest, .login-box .crest {
+    width: 72px; height: 72px;
+    background: white !important;
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    overflow: hidden; padding: 4px;
+  }
+  .login-card .crest img, .login-box .crest img {
+    width: 100%; height: 100%; object-fit: contain;
+  }
+  .login-card h1, .login-box h1 {
+    font-family: 'Baloo 2', sans-serif;
+    color: var(--navy); font-size: 26px; margin: 0 0 4px;
+  }
+  .login-card p.sub, .login-box p {
+    color: var(--muted); font-size: 14px; margin: 0 0 28px;
+  }
+
+  /* Inputs & selects */
+  select, input[type=text], input[type=date], input[type=email], textarea {
+    width: 100%;
+    padding: 13px 16px;
+    border-radius: 14px;
+    border: 2px solid var(--border);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    background: var(--cream);
+    color: var(--navy);
+    appearance: auto;
+  }
+  select:focus, input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
+  }
+
+  /* Primary button — orange throughout */
+  .btn-primary, .btn-login, .btn-teal, .refresh-btn, .btn-report {
+    background: var(--orange) !important;
+    color: white !important;
+    border: none !important;
+    padding: 14px 20px;
+    border-radius: 14px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+  .btn-primary:hover, .btn-login:hover, .btn-teal:hover, .refresh-btn:hover {
+    background: var(--orange-dark) !important;
+    transform: translateY(-1px);
+  }
+  .btn-primary:disabled, .btn-login:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; }
+  .btn-primary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+  /* Complete button stays green */
+  .btn-complete { background: var(--success) !important; }
+  .btn-complete:hover { background: #4a9445 !important; }
+
+  /* Secondary button */
+  .btn-secondary, .btn-outline {
+    background: white !important;
+    border: 2px solid var(--navy) !important;
+    color: var(--navy) !important;
+    border-radius: 12px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+
+  /* Topbar */
+  .topbar { background: var(--navy) !important; }
+  .topbar-badge {
+    background: white !important;
+    padding: 3px !important;
+    overflow: hidden;
+  }
+  .topbar-badge img { width: 100%; height: 100%; object-fit: contain; }
+
+  /* Stat pills */
+  .stat-pill { background: rgba(255,255,255,0.12) !important; }
+
+  /* Stone trail — orange accent */
+  .stone.unlocked .stone-circle { border-color: var(--orange) !important; }
+
+  /* Quiz options — orange hover */
+  .quiz-option:hover { border-color: var(--orange) !important; }
+
+  /* Activity box heading */
+  .activity-box h4 { color: var(--orange-dark) !important; }
+
+  /* Highlight spans */
+  .lesson-text .highlight {
+    background: var(--orange-light) !important;
+    color: var(--orange-dark) !important;
+  }
+
+  /* Hero strip */
+  .hero-strip { background: linear-gradient(135deg, var(--navy), var(--navy-light)) !important; }
+
+  /* Cards */
+  .card, .section-card, .stat-card {
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(26,39,68,0.07);
+  }
+
+  /* Modal close */
+  .modal-close { background: var(--cream) !important; }
+
+  /* Sidebar active item */
+  .nav-item.active { background: var(--orange) !important; }
+  .nav-item:hover { background: rgba(249,115,22,0.15) !important; }
+
+  /* XP toast */
+  .xp-toast { background: var(--navy) !important; color: var(--gold-light) !important; }
+
+  /* Sort/sequence blocks */
+  .seq-block, .sort-item, .safety-item {
+    border-color: var(--orange) !important;
+    color: var(--orange-dark) !important;
+  }
+  .match-part { border-color: var(--orange) !important; color: var(--orange-dark) !important; }
+  .match-part.selected { background: var(--orange) !important; color: white !important; }
+
+  /* Mode toggle (robotics) */
+  .mode-btn.active { background: var(--orange-light) !important; color: var(--orange-dark) !important; }
+
+  /* Report button */
+  .btn-report { background: var(--orange) !important; color: white !important; }
+
+  /* Field labels */
+  .field-group label, .form-field label, .field label { color: var(--navy); font-weight: 600; }
+
+
+  /* ── TTS BUTTON ── */
+  .tts-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; gap: 10px;
+  }
+  .tts-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--navy, #1A2744); color: white;
+    border: none; border-radius: 20px;
+    padding: 7px 14px; font-family: 'Baloo 2', sans-serif;
+    font-weight: 700; font-size: 12px; cursor: pointer;
+    flex-shrink: 0; transition: background 0.15s ease;
+  }
+  .tts-btn:hover  { background: #28395E; }
+  .tts-btn.speaking { background: var(--orange, #F97316); }
+  .tts-btn.speaking::before { content: '⏹ '; }
+  .tts-off { background: rgba(0,0,0,0.1) !important; color: #9CA3AF !important; }
+
+</style>
+</head>
+<body>
+
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="crest"><img src="logo.png" alt="Logo" class="logo-img"></div>
+    <h1>AI Awareness</h1>
+    <p class="sub">Future Ready Learners</p>
+    <div class="field-group"><label>Choose your class</label><select id="classSelect"><option value="">Loading…</option></select></div>
+    <div class="field-group"><label>Choose your name</label><select id="nameSelect" disabled><option value="">Pick class first</option></select></div>
+    <button class="btn-primary" id="startBtn" disabled>Let's Explore! 🧠</button>
+  </div>
+</div>
+
+<div class="app" id="mainApp">
+  <div class="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-badge"><img src="logo.png" alt="Logo" class="logo-img"></div>
+      <div class="topbar-title">AI Awareness<span>Future Ready Learners · South Africa</span></div>
+    </div>
+    <div class="topbar-stats">
+      <a href="home.html" class="home-btn"><span class="home-btn-icon">🏠</span><span class="home-btn-label" data-i18n="home">Home</span></a>
+      <div class="stat-pill">⚡ <span id="xpDisplay">0</span> XP</div>
+      <div class="stat-pill">🏅 <span id="badgeCount">0</span></div>
+    </div>
+  </div>
+  <div class="hero-strip">
+    <h2>Hi <span id="studentNameDisplay">there</span>! 🧠</h2>
+    <p>Discover what Artificial Intelligence is — and what it isn't.</p>
+  </div>
+  <div class="trail-wrap">
+    <div class="trail-line"></div>
+    <div id="trailStones"></div>
+  </div>
+  <footer class="app-footer">Future Ready Learners Programme · Coach L Academy</footer>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-card" id="modalCard"></div>
+</div>
+<div class="xp-toast" id="xpToast"></div>
+
+<script src="config.js"></script>
+<script src="lang.js"></script>
+<script>
+const LESSONS = [
+  {
+    id: 'ai_w1l1', week: 1, icon: '🤖', get title() { return LANG.t('ai_w1l1_title'); }, get blurb() { return LANG.t('ai_w1l1_blurb'); },
+    type: 'reading-quiz',
+        get content() { return `<p>${LANG.t('ai_w1l1_p1')}</p><p>${LANG.t('ai_w1l1_p2')}</p>`; },
+    quiz: { question: 'How is AI different from regular computer programs?', options: ['AI has feelings and opinions', 'AI learns from examples, not just fixed rules', 'AI is always connected to the internet'], correctIndex: 1 }
+  },
+  {
+    id: 'ai_w1l2', week: 1, icon: '📱', get title() { return LANG.t('ai_w1l2_title'); }, get blurb() { return LANG.t('ai_w1l2_blurb'); },
+    type: 'sort',
+        get content() { return `<p>${LANG.t('ai_w1l2_p1')}</p>`; },
+    sortItems: [
+      { id: 's1', label: '📸 Face unlock on a phone', answer: 'ai' },
+      { id: 's2', label: '🚦 Traffic light that counts down', answer: 'human' },
+      { id: 's3', label: '🎵 Music playlist recommended for you', answer: 'ai' },
+      { id: 's4', label: '🔢 Calculator adding numbers', answer: 'human' },
+      { id: 's5', label: '🗣️ Voice assistant understanding speech', answer: 'ai' },
+      { id: 's6', label: '⏰ Alarm clock going off at 7am', answer: 'human' }
+    ]
+  },
+  {
+    id: 'ai_w2l1', week: 2, icon: '📚', get title() { return LANG.t('ai_w2l1_title'); }, get blurb() { return LANG.t('ai_w2l1_blurb'); },
+    type: 'reading-quiz',
+        get content() { return `<p>${LANG.t('ai_w2l1_p1')}</p><p>${LANG.t('ai_w2l1_p2')}</p>`; },
+    quiz: { question: 'What does an AI need in order to learn?', options: ['Electricity and internet only', 'Lots of examples (training data)', 'A human to tell it every answer'], correctIndex: 1 }
+  },
+  {
+    id: 'ai_w2l2', week: 2, icon: '🧩', get title() { return LANG.t('ai_w2l2_title'); }, blurb: 'What AI does well — and what it doesn\'t',
+    type: 'reading-reflection',
+        get content() { return `<p>${LANG.t('ai_w2l2_p1')}</p><ul style="margin:10px 0 10px 20px;line-height:1.8;font-size:15px;">${LANG.t('ai_w2l2_list')}</ul><p>${LANG.t('ai_w2l2_p2')}</p>`; },
+    reflection: 'Name one thing you think AI will never be able to do as well as a human. Why do you think that?'
+  }
+];
+
+const BADGE_MILESTONES = { 2: 'AI Curious', 4: 'Future Thinker' };
+
+let currentStudent = null, studentsData = [], completedLessons = new Set(), totalXP = 0, earnedBadges = [];
+let activeQuizAnswered = false, sortState = {};
+
+async function loadStudents() {
+  const sel = document.getElementById('classSelect');
+  sel.innerHTML = `<option value="">${LANG.t('loading')}</option>`;
+  try {
+    const res = await fetch(API_URL + '?action=getStudents');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    studentsData = data.students || [];
+    const classes = [...new Set(studentsData.map(s => s.className))];
+    if (classes.length === 0) {
+      sel.innerHTML = '<option value="">No students enrolled yet — add rows to the Students tab</option>';
+      return;
+    }
+    sel.innerHTML = `<option value="">${LANG.t('select_class')}</option>` +
+      classes.map(c => `<option value="${c}">${c}</option>`).join('');
+  } catch(err) {
+    console.error('loadStudents error:', err);
+    sel.innerHTML = `<option value="">${LANG.t('cannot_connect')} (${err.message})</option>`;
+    // Auto retry after 4 seconds
+    setTimeout(loadStudents, 4000);
+  }
+}
+
+document.getElementById('classSelect').addEventListener('change', e => {
+  const nameSel = document.getElementById('nameSelect');
+  const inClass = studentsData.filter(s => s.className === e.target.value);
+  nameSel.innerHTML = '<option value="">Select your name…</option>' + inClass.map(s => `<option value="${s.studentId}">${s.name}</option>`).join('');
+  nameSel.disabled = !e.target.value;
+  document.getElementById('startBtn').disabled = true;
+});
+document.getElementById('nameSelect').addEventListener('change', e => { document.getElementById('startBtn').disabled = !e.target.value; });
+document.getElementById('startBtn').addEventListener('click', startSession);
+
+async function startSession() {
+  const studentId = document.getElementById('nameSelect').value;
+  currentStudent = studentsData.find(s => s.studentId === studentId);
+  if (!currentStudent) return;
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainApp').classList.add('active');
+  document.getElementById('studentNameDisplay').textContent = currentStudent.name.split(' ')[0];
+  await loadProgress();
+  renderTrail();
+}
+
+async function loadProgress() {
+  try {
+    const res = await fetch(`${API_URL}?action=getProgress&studentId=${currentStudent.studentId}`);
+    const data = await res.json();
+    totalXP = data.totalXP || 0;
+    earnedBadges = data.badges || [];
+    completedLessons = new Set((data.records || []).filter(r => r.completed === 'Y' && r.module === 'AI Awareness').map(r => r.activityType));
+  } catch(e) {}
+  updateStats();
+}
+
+function updateStats() {
+  document.getElementById('xpDisplay').textContent = totalXP;
+  document.getElementById('badgeCount').textContent = earnedBadges.length;
+}
+
+function renderTrail() {
+  document.getElementById('trailStones').innerHTML = LESSONS.map((lesson, idx) => {
+    const completed = completedLessons.has(lesson.id);
+    const unlocked = idx === 0 || completedLessons.has(LESSONS[idx-1].id);
+    const state = completed ? 'completed' : (unlocked ? 'unlocked' : 'locked');
+    return `<div class="stone ${state}"><div class="stone-circle" onclick="${state!=='locked'?`openLesson('${lesson.id}')`:''}"> ${completed?'✓':lesson.icon}</div><div class="stone-info"><h3>Week ${lesson.week} · ${lesson.title}</h3><p>${lesson.blurb}</p></div></div>`;
+  }).join('');
+}
+
+function openLesson(lessonId) {
+  const lesson = LESSONS.find(l => l.id === lessonId);
+  if (!lesson) return;
+  activeQuizAnswered = false;
+  sortState = {};
+  let body = `<div class="lesson-text">${lesson.content}</div>`;
+
+  if (lesson.type === 'reading-quiz') {
+    body += `<div class="activity-box"><h4>Quick Check</h4><p style="font-weight:600;margin:0 0 12px">${lesson.quiz.question}</p><div id="quizOptions">${lesson.quiz.options.map((o,i)=>`<button class="quiz-option" onclick="answerQuiz(${i},${lesson.quiz.correctIndex})">${o}</button>`).join('')}</div></div>`;
+  } else if (lesson.type === 'sort') {
+    const items = lesson.sortItems;
+    body += `<div class="activity-box"><h4>Sort it — AI or just a fixed program?</h4>
+      <div class="sort-items" id="sortPool">${items.map(it=>`<div class="sort-item" id="si_${it.id}" onclick="sortItemClick('${it.id}','${it.answer}',this)">${it.label}</div>`).join('')}</div>
+      <div class="sort-grid">
+        <div class="sort-col ai-col"><h5>🤖 Uses AI</h5><div class="sort-drop" id="drop_ai"></div></div>
+        <div class="sort-col human-col"><h5>⚙️ Fixed Rules</h5><div class="sort-drop" id="drop_human"></div></div>
+      </div></div>`;
+    window._sortLesson = lesson;
+  } else if (lesson.type === 'reading-reflection') {
+    body += `<div class="activity-box"><h4>Your Reflection</h4><p style="font-size:14px;margin:0 0 10px">${lesson.reflection}</p><textarea class="reflection-area" id="reflectionText" oninput="enableComplete()" placeholder="Type your answer here…"></textarea></div>`;
+  }
+
+  body += `<div class="modal-footer"><button class="btn-secondary" onclick="closeModal()">Close</button><button class="btn-complete" id="completeBtn" ${lesson.type==='sort'?'':'disabled'} onclick="completeLesson('${lesson.id}')">Mark Complete ✓</button></div>`;
+
+  document.getElementById('modalCard').innerHTML = `<button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="tts-bar">
+      <h2 style="margin:0">${lesson.icon} ${lesson.title}</h2>
+      <button class="tts-btn" id="ttsBtn" onclick="toggleTTS(this, lesson.title, body)">
+        🔊 Read Aloud
+      </button>
+    </div>
+    ${body}`;
+  document.getElementById('modalOverlay').classList.add('active');
+  window._currentLesson = lesson;
+  if (lesson.type === 'sort') checkSortComplete();
+}
+
+function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+
+function answerQuiz(sel, correct) {
+  if (activeQuizAnswered) return;
+  activeQuizAnswered = true;
+  document.querySelectorAll('#quizOptions .quiz-option').forEach((b,i) => { b.disabled = true; if(i===correct) b.classList.add('correct'); else if(i===sel) b.classList.add('incorrect'); });
+  document.getElementById('completeBtn').disabled = false;
+}
+
+function enableComplete() { document.getElementById('completeBtn').disabled = false; }
+
+function sortItemClick(id, answer, el) {
+  if (sortState[id]) return;
+  sortState[id] = answer;
+  const pool = document.getElementById('sortPool');
+  const clone = el.cloneNode(true);
+  clone.classList.add(`placed-${answer}`);
+  clone.onclick = null;
+  document.getElementById(`drop_${answer}`).appendChild(clone);
+  el.style.display = 'none';
+  checkSortComplete();
+}
+
+function checkSortComplete() {
+  const lesson = window._sortLesson;
+  if (!lesson) return;
+  const allPlaced = lesson.sortItems.every(it => sortState[it.id]);
+  const btn = document.getElementById('completeBtn');
+  if (btn) btn.disabled = !allPlaced;
+}
+
+async function completeLesson(lessonId) {
+  const lesson = LESSONS.find(l => l.id === lessonId);
+  const xp = 20;
+  completedLessons.add(lessonId);
+  totalXP += xp;
+  updateStats();
+  closeModal();
+  renderTrail();
+  showToast(`+${xp} XP — Amazing thinking! 🎉`);
+  setTimeout(() => {
+    const idx = LESSONS.findIndex(l => l.id === lessonId);
+    const next = document.querySelectorAll('.stone-circle')[idx + 1];
+    if (next) { next.classList.add('bounce'); setTimeout(() => next.classList.remove('bounce'), 500); }
+  }, 100);
+  try {
+    try { await apiGet({ action:'logProgress', studentId:currentStudent.studentId, module:'AI Awareness', week:lesson.week, activityType:lessonId, score:'', xp:xp, completed:'true' }); } catch(e) { console.error(e); }
+  } catch(e) {}
+  const badge = BADGE_MILESTONES[completedLessons.size];
+  if (badge && !earnedBadges.includes(badge)) {
+    earnedBadges.push(badge); updateStats();
+    setTimeout(() => showToast(`🏅 Badge: ${badge}!`), 1200);
+    try { await apiGet({ action:'awardBadge', studentId:currentStudent.studentId, badgeName:badge }); } catch(e) {}
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('xpToast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+
+// ── API helpers — GET only, avoids CORS preflight ───────────────────────
+async function apiGet(params) {
+  const qs = Object.entries(params).map(([k,v]) => k + '=' + encodeURIComponent(v)).join('&');
+  const res = await fetch(API_URL + '?' + qs);
+  return res.json();
+}
+
+document.addEventListener('langchange', () => { renderTrail(); LANG.apply(); });
+loadStudents();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<script>
+  // Apply Twemoji after DOM loads and after any dynamic content changes
+  function applyTwemoji() {
+    twemoji.parse(document.body, {
+      folder: 'svg',
+      ext: '.svg',
+      base: 'https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/'
+    });
+  }
+  document.addEventListener('DOMContentLoaded', applyTwemoji);
+  // Re-apply after language changes (which re-render content)
+  document.addEventListener('langchange', () => setTimeout(applyTwemoji, 100));
+</script>
+</body>
+</html>
