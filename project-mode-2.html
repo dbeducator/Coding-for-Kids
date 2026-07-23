@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Project Mode 2: Score the Goal — Coding for Kids</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1A2744;
+  --navy2: #28395E;
+  --orange: #F97316;
+  --orange2: #C2560B;
+  --orange-light: #FEF0E6;
+  --cream: #FBF8F2;
+  --gold: #F2B544;
+  --success: #5FAD56;
+  --teal: #2EC4B6;
+  --coral: #E8634A;
+  --border: #EEE8D6;
+  --muted: #9CA3AF;
+
+  /* Block category colours */
+  --cat-motion:  #4C97FF;
+  --cat-look:    #9966FF;
+  --cat-sound:   #CF63CF;
+  --cat-control: #FFAB19;
+  --cat-sense:   #5CB1D6;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Inter', sans-serif; background: var(--navy); color: white; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; user-select: none; }
+h1,h2,h3 { font-family: 'Baloo 2', sans-serif; }
+
+/* ── TOP BAR ─────────────────────────────────────────────── */
+.topbar {
+  background: var(--navy);
+  border-bottom: 2px solid var(--navy2);
+  padding: 10px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0; gap: 10px;
+}
+.topbar-left { display: flex; align-items: center; gap: 10px; }
+
+/* ── HOME BUTTON ── */
+.home-btn {
+  display: inline-flex; align-items: stretch; text-decoration: none;
+  border-radius: 8px; overflow: hidden;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.15), 0 4px 10px rgba(0,0,0,0.25);
+  font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 12px;
+  transition: transform 0.1s ease; flex-shrink: 0;
+}
+.home-btn:active { transform: translateY(1px); }
+.home-btn-icon {
+  background: var(--orange, #F97316); color: white;
+  padding: 6px 8px; display: flex; align-items: center; justify-content: center; font-size: 13px;
+}
+.home-btn-label {
+  background: #F3F4F6; color: var(--orange-dark, #C2560B);
+  padding: 6px 12px; display: flex; align-items: center;
+}
+.home-btn:hover .home-btn-icon { background: #F3F4F6; color: var(--orange, #F97316); }
+.home-btn:hover .home-btn-label { background: var(--orange, #F97316); color: white; }
+.logo-circle {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: white; overflow: hidden; padding: 2px; flex-shrink: 0;
+}
+.logo-circle img { width: 100%; height: 100%; object-fit: contain; }
+.topbar h1 { font-size: 15px; line-height: 1.1; }
+.topbar h1 span { display: block; font-size: 10px; font-weight: 500; color: var(--gold); font-family: 'Inter', sans-serif; }
+.run-btn {
+  background: var(--success); border: none; color: white;
+  padding: 8px 18px; border-radius: 20px;
+  font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 14px;
+  cursor: pointer; display: flex; align-items: center; gap: 6px;
+  transition: transform 0.1s ease, background 0.15s ease;
+  flex-shrink: 0;
+}
+.run-btn:active { transform: scale(0.95); }
+.run-btn.running { background: var(--coral); }
+.stop-btn {
+  background: var(--coral); border: none; color: white;
+  padding: 8px 14px; border-radius: 20px;
+  font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 14px;
+  cursor: pointer; display: none; flex-shrink: 0;
+}
+.xp-pill {
+  background: var(--navy2); border-radius: 20px;
+  padding: 5px 10px; font-size: 12px; font-weight: 700;
+  color: var(--gold); white-space: nowrap;
+}
+
+/* ── MAIN AREA ───────────────────────────────────────────── */
+.workspace {
+  display: flex; flex: 1; overflow: hidden;
+}
+
+/* ── STAGE (left panel) ──────────────────────────────────── */
+.stage-panel {
+  width: 45%; flex-shrink: 0;
+  display: flex; flex-direction: column;
+  background: var(--navy2);
+  border-right: 2px solid #1A2744;
+}
+.stage-wrap {
+  position: relative; flex: 1; overflow: hidden;
+  background: #0F1A30;
+}
+canvas#stage {
+  width: 100%; height: 100%;
+  display: block; touch-action: none;
+}
+.stage-overlay {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.stage-hint {
+  font-size: 12px; color: rgba(255,255,255,0.55);
+  text-align: center; padding: 8px 10px;
+  background: rgba(15,26,48,0.75);
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+/* Sprite selector */
+.sprite-bar {
+  padding: 8px 10px;
+  display: flex; gap: 8px; align-items: center;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  overflow-x: auto; flex-shrink: 0;
+}
+.sprite-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); white-space: nowrap; }
+.sprite-thumb {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: rgba(255,255,255,0.08); border: 2px solid transparent;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; cursor: pointer; flex-shrink: 0;
+  transition: border-color 0.15s ease;
+}
+.sprite-thumb.active { border-color: var(--orange); background: var(--orange-light); }
+
+/* ── RIGHT PANEL ─────────────────────────────────────────── */
+.code-panel {
+  flex: 1; display: flex; flex-direction: column; overflow: hidden;
+}
+
+/* Category tabs */
+.cat-tabs {
+  display: flex; gap: 0; overflow-x: auto; flex-shrink: 0;
+  border-bottom: 2px solid rgba(255,255,255,0.08);
+  scrollbar-width: none;
+}
+.cat-tabs::-webkit-scrollbar { display: none; }
+.cat-tab {
+  padding: 8px 12px; font-size: 11px; font-weight: 700;
+  white-space: nowrap; cursor: pointer; border: none;
+  background: transparent; color: rgba(255,255,255,0.5);
+  border-bottom: 3px solid transparent; margin-bottom: -2px;
+  font-family: 'Baloo 2', sans-serif; transition: color 0.15s ease;
+  flex-shrink: 0;
+}
+.cat-tab.active { color: white; border-bottom-color: var(--orange); }
+
+/* Two-column layout: palette | script */
+.editor-area {
+  flex: 1; display: flex; overflow: hidden;
+}
+
+/* Block palette */
+.palette {
+  width: 48%; border-right: 1px solid rgba(255,255,255,0.08);
+  overflow-y: auto; padding: 8px 6px;
+  scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+.palette-section { display: none; }
+.palette-section.active { display: block; }
+
+/* Script area */
+.script-area {
+  flex: 1; overflow-y: auto; padding: 8px 6px;
+  position: relative; min-height: 100%;
+  scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+.script-empty {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; pointer-events: none;
+  color: rgba(255,255,255,0.2); font-size: 12px; text-align: center; padding: 20px;
+}
+.script-empty .arrow { font-size: 28px; animation: pulse 2s ease infinite; }
+@keyframes pulse { 0%,100%{opacity:0.2} 50%{opacity:0.6} }
+
+/* ── BLOCKS ──────────────────────────────────────────────── */
+.block {
+  border-radius: 10px; padding: 8px 10px;
+  font-family: 'Baloo 2', sans-serif; font-weight: 700;
+  font-size: 12px; cursor: grab; margin-bottom: 6px;
+  display: flex; align-items: center; gap: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  position: relative; transition: transform 0.1s ease, box-shadow 0.1s ease;
+  touch-action: none; -webkit-user-drag: none;
+}
+.block:active { cursor: grabbing; }
+.block .block-icon { font-size: 14px; flex-shrink: 0; }
+.block .block-label { flex: 1; line-height: 1.2; }
+.block input[type=number], .block select {
+  width: 44px; padding: 2px 4px; border-radius: 6px;
+  border: none; font-family: 'Baloo 2', sans-serif;
+  font-weight: 700; font-size: 12px; text-align: center;
+  background: rgba(255,255,255,0.25); color: white;
+}
+.block input[type=number]:focus, .block select:focus { outline: 2px solid rgba(255,255,255,0.5); }
+
+/* Block categories */
+.block.motion  { background: var(--cat-motion); }
+.block.look    { background: var(--cat-look); }
+.block.sound   { background: var(--cat-sound); }
+.block.control { background: var(--cat-control); color: var(--navy); }
+.block.control input, .block.control select { color: var(--navy); background: rgba(0,0,0,0.15); }
+.block.sense   { background: var(--cat-sense); }
+.block.hat     { border-radius: 20px 20px 10px 10px; }
+
+/* Script blocks (in script area) */
+.script-block {
+  border-radius: 10px; padding: 9px 10px;
+  font-family: 'Baloo 2', sans-serif; font-weight: 700;
+  font-size: 13px; margin-bottom: 4px;
+  display: flex; align-items: center; gap: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  position: relative; cursor: default;
+  animation: snapIn 0.15s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes snapIn {
+  from { transform: scale(0.85); opacity: 0.5; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+.script-block .block-icon { font-size: 16px; flex-shrink: 0; }
+.script-block .block-label { flex: 1; }
+.script-block input[type=number], .script-block select {
+  width: 50px; padding: 3px 6px; border-radius: 8px;
+  border: none; font-family: 'Baloo 2', sans-serif;
+  font-weight: 700; font-size: 13px; text-align: center;
+  background: rgba(255,255,255,0.25); color: white;
+}
+.script-block input[type=number]:focus, .script-block select:focus { outline: 2px solid white; }
+.script-block.motion  { background: var(--cat-motion); }
+.script-block.look    { background: var(--cat-look); }
+.script-block.sound   { background: var(--cat-sound); }
+.script-block.control { background: var(--cat-control); color: var(--navy); }
+.script-block.control input, .script-block.control select { color: var(--navy); background: rgba(0,0,0,0.15); }
+.script-block.sense   { background: var(--cat-sense); }
+.script-block.hat     { border-radius: 20px 20px 10px 10px; }
+
+/* Delete X button on script blocks */
+.del-btn {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: rgba(0,0,0,0.25); border: none; color: white;
+  font-size: 11px; cursor: pointer; display: flex;
+  align-items: center; justify-content: center; flex-shrink: 0;
+}
+.del-btn:hover { background: var(--coral); }
+
+/* Active block highlight during run */
+.script-block.executing {
+  outline: 3px solid white;
+  box-shadow: 0 0 16px rgba(255,255,255,0.4);
+}
+
+/* Drop zone indicator */
+.drop-zone {
+  height: 8px; border-radius: 4px;
+  background: var(--orange); opacity: 0;
+  margin-bottom: 4px; transition: opacity 0.15s ease;
+}
+.drop-zone.visible { opacity: 1; }
+
+/* ── SAY BUBBLE on canvas overlay ────────────────────────── */
+.say-bubble {
+  position: absolute; background: white; color: var(--navy);
+  border-radius: 14px; padding: 8px 12px;
+  font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 13px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  pointer-events: none; white-space: nowrap;
+  transform: translate(-50%, -110%);
+  max-width: 160px; white-space: normal; text-align: center;
+  display: none;
+}
+.say-bubble::after {
+  content: ''; position: absolute; bottom: -8px; left: 50%;
+  transform: translateX(-50%);
+  border: 8px solid transparent; border-top-color: white; border-bottom: none;
+}
+
+/* ── BOTTOM BAR ──────────────────────────────────────────── */
+.bottom-bar {
+  background: var(--navy); border-top: 2px solid var(--navy2);
+  padding: 8px 14px; display: flex; align-items: center;
+  justify-content: space-between; flex-shrink: 0; gap: 8px;
+}
+.save-btn {
+  background: var(--orange); border: none; color: white;
+  padding: 8px 16px; border-radius: 12px;
+  font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 13px;
+  cursor: pointer;
+}
+.save-btn:active { background: var(--orange2); }
+.clear-btn {
+  background: rgba(255,255,255,0.1); border: none; color: rgba(255,255,255,0.6);
+  padding: 8px 14px; border-radius: 12px;
+  font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 12px;
+  cursor: pointer;
+}
+.status-msg { font-size: 11px; color: var(--muted); flex: 1; text-align: center; }
+
+/* ── LOCKED OVERLAY ──────────────────────────────────────── */
+.locked-overlay {
+  position: fixed; inset: 0; background: rgba(26,39,68,0.95);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 200; padding: 30px; text-align: center; gap: 16px;
+}
+.locked-overlay.hidden { display: none; }
+.lock-icon { font-size: 56px; }
+.locked-overlay h2 { font-size: 24px; color: var(--gold); }
+.locked-overlay p { color: rgba(255,255,255,0.7); font-size: 14px; line-height: 1.6; max-width: 320px; }
+.progress-track {
+  width: 100%; max-width: 300px;
+  background: rgba(255,255,255,0.1); border-radius: 20px;
+  height: 14px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; border-radius: 20px;
+  background: linear-gradient(90deg, var(--orange), var(--gold));
+  transition: width 0.4s ease;
+}
+.locked-overlay .go-btn {
+  background: var(--orange); border: none; color: white;
+  padding: 14px 28px; border-radius: 14px;
+  font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 16px;
+  cursor: pointer; text-decoration: none; display: inline-block;
+}
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 70px; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--navy); color: var(--gold);
+  padding: 10px 20px; border-radius: 20px;
+  font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 13px;
+  opacity: 0; transition: opacity 0.3s, transform 0.3s;
+  z-index: 100; white-space: nowrap; box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- LOCKED OVERLAY -->
+<div class="locked-overlay" id="lockedOverlay">
+  <a href="home.html" class="home-btn" style="position:absolute;top:16px;left:16px;">
+    <span class="home-btn-icon">🏠</span><span class="home-btn-label" data-i18n="home">Home</span>
+  </a>
+  <div class="lock-icon">🔒</div>
+  <h2>Project 2 Locked</h2>
+  <p>Finish a run in <strong>Project Mode</strong> first to unlock this next challenge — Score the Goal!</p>
+  <div class="progress-track"><div class="progress-fill" id="lockProgress" style="width:0%"></div></div>
+  <p id="lockMsg" style="font-size:12px;color:var(--gold);">Project 1 not completed yet</p>
+  <a href="project-mode.html" class="go-btn">Go to Project 1 →</a>
+</div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="logo-circle"><img src="logo.png" alt="Logo"></div>
+    <h1>Project 2 <span>🏀 Score the Goal · Future Ready Learners</span></h1>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center;">
+    <a href="home.html" class="home-btn"><span class="home-btn-icon">🏠</span><span class="home-btn-label" data-i18n="home">Home</span></a>
+    <a href="project-mode.html" class="home-btn" title="Back to Project 1"><span class="home-btn-icon">⬅️</span></a>
+    <a href="project-mode-3.html" class="home-btn" title="Project 3: Animate a Character"><span class="home-btn-icon">🦾</span></a>
+    <div class="xp-pill">⚡ <span id="xpDisplay">0</span></div>
+    <button class="run-btn" id="runBtn" onclick="runProgram()">▶ Run</button>
+    <button class="stop-btn" id="stopBtn" onclick="stopProgram()">■ Stop</button>
+  </div>
+</div>
+
+<!-- WORKSPACE -->
+<div class="workspace">
+
+  <!-- STAGE -->
+  <div class="stage-panel">
+    <div class="stage-wrap" id="stageWrap">
+      <canvas id="stage"></canvas>
+      <div class="stage-overlay">
+        <div class="stage-hint" id="stageHint">🕳️ Code a path to the hole, then press ▶ Run!</div>
+      </div>
+      <div class="say-bubble" id="sayBubble"></div>
+    </div>
+    <div class="sprite-bar">
+      <div class="sprite-label">Sprite:</div>
+      <div class="sprite-thumb active" data-sprite="basketball" onclick="selectSprite('basketball')" title="Basketball">🏀</div>
+      <div class="sprite-thumb"        data-sprite="golfball"   onclick="selectSprite('golfball')"   title="Golf Ball">🥎</div>
+      <div class="sprite-thumb"        data-sprite="football"   onclick="selectSprite('football')"   title="Football">⚽</div>
+      <div class="sprite-thumb"        data-sprite="bird"       onclick="selectSprite('bird')"       title="Bird">🐦</div>
+      <div class="sprite-thumb"        data-sprite="bee"        onclick="selectSprite('bee')"        title="Bee">🐝</div>
+    </div>
+  </div>
+
+  <!-- CODE EDITOR -->
+  <div class="code-panel">
+    <!-- Category tabs -->
+    <div class="cat-tabs">
+      <button class="cat-tab active" data-cat="motion"  onclick="switchCat('motion')">🏃 Motion</button>
+      <button class="cat-tab"        data-cat="look"    onclick="switchCat('look')">👀 Looks</button>
+      <button class="cat-tab"        data-cat="control" onclick="switchCat('control')">🔁 Control</button>
+      <button class="cat-tab"        data-cat="sound"   onclick="switchCat('sound')">🔊 Sound</button>
+      <button class="cat-tab"        data-cat="sense"   onclick="switchCat('sense')">✋ Events</button>
+    </div>
+
+    <div class="editor-area">
+      <!-- PALETTE -->
+      <div class="palette" id="palette">
+
+        <div class="palette-section active" data-cat="motion">
+          <div class="block motion hat" data-type="when_run">
+            <span class="block-icon">🚩</span>
+            <span class="block-label">When ▶ clicked</span>
+          </div>
+          <div class="block motion" data-type="move_steps">
+            <span class="block-icon">➡️</span>
+            <span class="block-label">Move <input type="number" value="50" min="-300" max="300" class="val"> steps</span>
+          </div>
+          <div class="block motion" data-type="move_left">
+            <span class="block-icon">⬅️</span>
+            <span class="block-label">Move left <input type="number" value="50" min="0" max="300" class="val"> steps</span>
+          </div>
+          <div class="block motion" data-type="move_up">
+            <span class="block-icon">⬆️</span>
+            <span class="block-label">Move up <input type="number" value="50" min="0" max="300" class="val"> steps</span>
+          </div>
+          <div class="block motion" data-type="move_down">
+            <span class="block-icon">⬇️</span>
+            <span class="block-label">Move down <input type="number" value="50" min="0" max="300" class="val"> steps</span>
+          </div>
+          <div class="block motion" data-type="turn_right">
+            <span class="block-icon">↩️</span>
+            <span class="block-label">Turn right <input type="number" value="90" min="0" max="360" class="val">°</span>
+          </div>
+          <div class="block motion" data-type="turn_left">
+            <span class="block-icon">↪️</span>
+            <span class="block-label">Turn left <input type="number" value="90" min="0" max="360" class="val">°</span>
+          </div>
+          <div class="block motion" data-type="go_home">
+            <span class="block-icon">🏠</span>
+            <span class="block-label">Go to centre</span>
+          </div>
+          <div class="block motion" data-type="bounce">
+            <span class="block-icon">↔️</span>
+            <span class="block-label">Bounce off edge</span>
+          </div>
+        </div>
+
+        <div class="palette-section" data-cat="look">
+          <div class="block look" data-type="say">
+            <span class="block-icon">💬</span>
+            <span class="block-label">Say <input type="text" value="Hello!" class="val" style="width:70px;padding:2px 4px;border-radius:6px;border:none;background:rgba(255,255,255,0.25);color:white;font-size:12px;font-family:Baloo 2,sans-serif;font-weight:700;"></span>
+          </div>
+          <div class="block look" data-type="say_seconds">
+            <span class="block-icon">💬</span>
+            <span class="block-label">Say <input type="text" value="Yebo!" class="val txt" style="width:50px;padding:2px 4px;border-radius:6px;border:none;background:rgba(255,255,255,0.25);color:white;font-size:12px;font-family:Baloo 2,sans-serif;font-weight:700;"> for <input type="number" value="2" min="1" max="10" class="val2"> s</span>
+          </div>
+          <div class="block look" data-type="grow">
+            <span class="block-icon">🔼</span>
+            <span class="block-label">Grow by <input type="number" value="10" min="1" max="100" class="val">%</span>
+          </div>
+          <div class="block look" data-type="shrink">
+            <span class="block-icon">🔽</span>
+            <span class="block-label">Shrink by <input type="number" value="10" min="1" max="100" class="val">%</span>
+          </div>
+          <div class="block look" data-type="set_size">
+            <span class="block-icon">📐</span>
+            <span class="block-label">Set size to <input type="number" value="100" min="10" max="300" class="val">%</span>
+          </div>
+          <div class="block look" data-type="show">
+            <span class="block-icon">👁️</span>
+            <span class="block-label">Show sprite</span>
+          </div>
+          <div class="block look" data-type="hide">
+            <span class="block-icon">🙈</span>
+            <span class="block-label">Hide sprite</span>
+          </div>
+          <div class="block look" data-type="spin">
+            <span class="block-icon">🌀</span>
+            <span class="block-label">Spin <input type="number" value="1" min="1" max="10" class="val"> times</span>
+          </div>
+        </div>
+
+        <div class="palette-section" data-cat="control">
+          <div class="block control hat" data-type="when_run">
+            <span class="block-icon">🚩</span>
+            <span class="block-label">When ▶ clicked</span>
+          </div>
+          <div class="block control" data-type="wait">
+            <span class="block-icon">⏱️</span>
+            <span class="block-label">Wait <input type="number" value="1" min="0.1" max="10" step="0.1" class="val"> seconds</span>
+          </div>
+          <div class="block control" data-type="repeat">
+            <span class="block-icon">🔁</span>
+            <span class="block-label">Repeat <input type="number" value="3" min="1" max="20" class="val"> times</span>
+          </div>
+          <div class="block control" data-type="forever">
+            <span class="block-icon">♾️</span>
+            <span class="block-label">Repeat forever</span>
+          </div>
+          <div class="block control" data-type="stop_all">
+            <span class="block-icon">🛑</span>
+            <span class="block-label">Stop all</span>
+          </div>
+        </div>
+
+        <div class="palette-section" data-cat="sound">
+          <div class="block sound" data-type="play_sound">
+            <span class="block-icon">🔊</span>
+            <span class="block-label">Play sound
+              <select class="val" style="padding:2px 4px;border-radius:6px;border:none;background:rgba(255,255,255,0.25);color:white;font-size:11px;font-family:Baloo 2,sans-serif;font-weight:700;">
+                <option value="pop">Pop</option>
+                <option value="boing">Boing</option>
+                <option value="cheer">Cheer</option>
+                <option value="bell">Bell</option>
+              </select>
+            </span>
+          </div>
+          <div class="block sound" data-type="play_note">
+            <span class="block-icon">🎵</span>
+            <span class="block-label">Play note
+              <select class="val" style="padding:2px 4px;border-radius:6px;border:none;background:rgba(255,255,255,0.25);color:white;font-size:11px;font-family:Baloo 2,sans-serif;font-weight:700;">
+                <option value="261">C (do)</option>
+                <option value="294">D (re)</option>
+                <option value="329">E (mi)</option>
+                <option value="349">F (fa)</option>
+                <option value="392">G (sol)</option>
+              </select>
+            </span>
+          </div>
+        </div>
+
+        <div class="palette-section" data-cat="sense">
+          <div class="block sense hat" data-type="when_run">
+            <span class="block-icon">🚩</span>
+            <span class="block-label">When ▶ clicked</span>
+          </div>
+          <div class="block sense hat" data-type="when_tapped">
+            <span class="block-icon">👆</span>
+            <span class="block-label">When sprite tapped</span>
+          </div>
+        </div>
+
+      </div><!-- end palette -->
+
+      <!-- SCRIPT AREA -->
+      <div class="script-area" id="scriptArea">
+        <div class="script-empty" id="scriptEmpty">
+          <div class="arrow">👈</div>
+          <div>Tap a block on the left to add it to your program!</div>
+        </div>
+        <div id="scriptBlocks"></div>
+      </div>
+
+    </div><!-- end editor-area -->
+  </div><!-- end code-panel -->
+</div><!-- end workspace -->
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <button class="clear-btn" onclick="clearScript()">🗑 Clear</button>
+  <div class="status-msg" id="statusMsg">Get your ball into the hole! 🕳️</div>
+  <button class="save-btn" onclick="saveProject()">💾 Save</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="config.js"></script>
+<script src="lang.js"></script>
+<script>
+  if (typeof LANG === 'undefined') {
+    console.error('lang.js failed to load — using fallback text so the rest of the app still works.');
+    window.LANG = { t: (key) => key, current: 'en', apply: function(){} };
+  }
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+const COMPLETED_LESSONS_KEY = 'frl_coding_completed';
+const PROJECT_KEY           = 'frl_project2_v1';
+const TOTAL_LESSONS         = 4;
+
+let script      = [];   // array of block objects {type, val, val2}
+let sprite      = { x:0, y:0, angle:0, size:60, emoji:'🏀', visible:true };
+let currentEmoji = '🏀';
+let isRunning   = false;
+let stopFlag    = false;
+let audioCtx    = null;
+let savedXP     = parseInt(localStorage.getItem('frl_project2_xp') || '0');
+let currentStudent = null;
+
+// The target hole the sprite needs to reach
+let hole   = { x:0, y:0, r:26 };
+let scored = false;
+
+const SPRITES = {
+  basketball:'🏀', golfball:'🥎', football:'⚽', bird:'🐦', bee:'🐝'
+};
+
+// ═══════════════════════════════════════════════════════════
+// CANVAS SETUP
+// ═══════════════════════════════════════════════════════════
+const canvas  = document.getElementById('stage');
+const ctx     = canvas.getContext('2d');
+const wrap    = document.getElementById('stageWrap');
+
+function resizeCanvas() {
+  canvas.width  = wrap.clientWidth;
+  canvas.height = wrap.clientHeight;
+  sprite.x = canvas.width  / 2;
+  sprite.y = canvas.height / 2;
+  placeHole();
+  drawStage();
+}
+
+function drawStage() {
+  const w = canvas.width, h = canvas.height;
+  // Background — night sky gradient
+  const grad = ctx.createLinearGradient(0,0,0,h);
+  grad.addColorStop(0, '#0F1A30');
+  grad.addColorStop(1, '#1A2744');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,w,h);
+
+  // Grid lines — subtle
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+  ctx.lineWidth = 1;
+  for(let x=0; x<w; x+=40){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke(); }
+  for(let y=0; y<h; y+=40){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
+
+  // Centre cross
+  ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(w/2,0); ctx.lineTo(w/2,h); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0,h/2); ctx.lineTo(w,h/2); ctx.stroke();
+
+  // Hole (target)
+  drawHole();
+
+  // Sprite
+  if (!sprite.visible) return;
+  ctx.save();
+  ctx.translate(sprite.x, sprite.y);
+  ctx.rotate(sprite.angle * Math.PI / 180);
+  const sz = (sprite.size / 100) * 44;
+  ctx.font = `${sz}px serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(currentEmoji, 0, 0);
+  ctx.restore();
+
+  // Say bubble
+  const bubble = document.getElementById('sayBubble');
+  if (bubble.style.display === 'block') {
+    const rect = wrap.getBoundingClientRect();
+    bubble.style.left = sprite.x + 'px';
+    bubble.style.top  = (sprite.y - sz/2) + 'px';
+  }
+}
+
+window.addEventListener('resize', resizeCanvas);
+
+// Tap sprite on canvas
+canvas.addEventListener('click', e => {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width  / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const cx = (e.clientX - rect.left) * scaleX;
+  const cy = (e.clientY - rect.top)  * scaleY;
+  const sz = (sprite.size / 100) * 22;
+  if (Math.abs(cx - sprite.x) < sz && Math.abs(cy - sprite.y) < sz) {
+    if (!isRunning) {
+      const tapBlocks = script.filter(b => b.type === 'when_tapped');
+      if (tapBlocks.length) runBlocks(tapBlocks);
+    }
+  }
+});
+
+// ═══════════════════════════════════════════════════════════
+// SPRITES
+// ═══════════════════════════════════════════════════════════
+function selectSprite(name) {
+  currentEmoji = SPRITES[name];
+  document.querySelectorAll('.sprite-thumb').forEach(t =>
+    t.classList.toggle('active', t.dataset.sprite === name)
+  );
+  drawStage();
+}
+
+// ═══════════════════════════════════════════════════════════
+// BLOCK PALETTE — click to add
+// ═══════════════════════════════════════════════════════════
+document.querySelectorAll('.palette .block').forEach(b => {
+  b.addEventListener('click', e => {
+    const type = b.dataset.type;
+    const val  = b.querySelector('.val')  ? b.querySelector('.val').value  : null;
+    const val2 = b.querySelector('.val2') ? b.querySelector('.val2').value : null;
+    addBlock({ type, val, val2 });
+  });
+  // Stop propagation from inputs
+  b.querySelectorAll('input,select').forEach(inp => inp.addEventListener('click', e => e.stopPropagation()));
+});
+
+function switchCat(cat) {
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.toggle('active', t.dataset.cat === cat));
+  document.querySelectorAll('.palette-section').forEach(s => s.classList.toggle('active', s.dataset.cat === cat));
+}
+
+// ═══════════════════════════════════════════════════════════
+// SCRIPT MANAGEMENT
+// ═══════════════════════════════════════════════════════════
+function addBlock(block) {
+  // Prevent duplicate when_run at start
+  if (block.type === 'when_run' && script[0]?.type === 'when_run') {
+    showToast('Already have a "When ▶ clicked" block!');
+    return;
+  }
+  script.push({ ...block, id: Date.now() + Math.random() });
+  renderScript();
+  document.getElementById('scriptEmpty').style.display = 'none';
+  setStatus('Block added! (' + script.length + ' blocks total)');
+}
+
+function removeBlock(id) {
+  script = script.filter(b => b.id !== id);
+  renderScript();
+  if (script.length === 0) document.getElementById('scriptEmpty').style.display = 'flex';
+}
+
+function clearScript() {
+  if (script.length === 0) return;
+  if (!confirm('Clear all blocks?')) return;
+  script = [];
+  renderScript();
+  document.getElementById('scriptEmpty').style.display = 'flex';
+  resetSprite();
+  setStatus('Script cleared');
+}
+
+function renderScript() {
+  const area = document.getElementById('scriptBlocks');
+  area.innerHTML = '';
+  script.forEach((b, idx) => {
+    const div = document.createElement('div');
+    div.className = `script-block ${blockCategory(b.type)}${b.type.includes('when') || b.type === 'when_run' || b.type === 'when_tapped' ? ' hat' : ''}`;
+    div.dataset.id = b.id;
+    div.innerHTML = `
+      <span class="block-icon">${blockIcon(b.type)}</span>
+      <span class="block-label">${blockLabel(b)}</span>
+      <button class="del-btn" onclick="removeBlock(${b.id})">✕</button>
+    `;
+    // Make inputs editable
+    div.querySelectorAll('input,select').forEach(inp => {
+      inp.addEventListener('change', e => {
+        const sb = script.find(x => x.id === b.id);
+        if (!sb) return;
+        const cls = inp.classList.contains('val2') ? 'val2' : 'val';
+        if (cls === 'val2') sb.val2 = e.target.value;
+        else sb.val = e.target.value;
+      });
+      inp.addEventListener('click', e => e.stopPropagation());
+    });
+    area.appendChild(div);
+  });
+}
+
+function blockCategory(type) {
+  if (['move_steps','move_left','move_up','move_down','turn_right','turn_left','go_home','bounce'].includes(type)) return 'motion';
+  if (['say','say_seconds','grow','shrink','set_size','show','hide','spin'].includes(type)) return 'look';
+  if (['wait','repeat','forever','stop_all'].includes(type)) return 'control';
+  if (['play_sound','play_note'].includes(type)) return 'sound';
+  if (['when_run','when_tapped'].includes(type)) return 'motion';
+  return 'sense';
+}
+
+function blockIcon(type) {
+  const icons = {
+    when_run:'🚩', when_tapped:'👆',
+    move_steps:'➡️', move_left:'⬅️', move_up:'⬆️', move_down:'⬇️',
+    turn_right:'↩️', turn_left:'↪️', go_home:'🏠', bounce:'↔️',
+    say:'💬', say_seconds:'💬', grow:'🔼', shrink:'🔽', set_size:'📐', show:'👁️', hide:'🙈', spin:'🌀',
+    wait:'⏱️', repeat:'🔁', forever:'♾️', stop_all:'🛑',
+    play_sound:'🔊', play_note:'🎵'
+  };
+  return icons[type] || '▪️';
+}
+
+function blockLabel(b) {
+  switch(b.type) {
+    case 'when_run':     return 'When ▶ clicked';
+    case 'when_tapped':  return 'When sprite tapped';
+    case 'move_steps':   return `Move <input type="number" value="${b.val||50}" class="val"> steps`;
+    case 'move_left':    return `Move left <input type="number" value="${b.val||50}" class="val"> steps`;
+    case 'move_up':      return `Move up <input type="number" value="${b.val||50}" class="val"> steps`;
+    case 'move_down':    return `Move down <input type="number" value="${b.val||50}" class="val"> steps`;
+    case 'turn_right':   return `Turn right <input type="number" value="${b.val||90}" class="val">°`;
+    case 'turn_left':    return `Turn left <input type="number" value="${b.val||90}" class="val">°`;
+    case 'go_home':      return 'Go to centre';
+    case 'bounce':       return 'Bounce off edge';
+    case 'say':          return `Say <input type="text" value="${b.val||'Hello!'}" class="val" style="width:70px;padding:2px 6px;border-radius:6px;border:none;background:rgba(255,255,255,0.25);color:white;font-size:12px;font-family:Baloo 2,sans-serif;font-weight:700;">`;
+    case 'say_seconds':  return `Say <input type="text" value="${b.val||'Yebo!'}" class="val txt" style="width:50px;padding:2px 4px;border-radius:6px;border:none;background:rgba(255,255,255,0.25);color:white;font-size:12px;font-family:Baloo 2,sans-serif;font-weight:700;"> for <input type="number" value="${b.val2||2}" class="val2"> s`;
+    case 'grow':         return `Grow by <input type="number" value="${b.val||10}" class="val">%`;
+    case 'shrink':       return `Shrink by <input type="number" value="${b.val||10}" class="val">%`;
+    case 'set_size':     return `Set size to <input type="number" value="${b.val||100}" class="val">%`;
+    case 'show':         return 'Show sprite';
+    case 'hide':         return 'Hide sprite';
+    case 'spin':         return `Spin <input type="number" value="${b.val||1}" class="val"> times`;
+    case 'wait':         return `Wait <input type="number" value="${b.val||1}" step="0.1" class="val"> seconds`;
+    case 'repeat':       return `Repeat <input type="number" value="${b.val||3}" class="val"> times`;
+    case 'forever':      return 'Repeat forever';
+    case 'stop_all':     return 'Stop all';
+    case 'play_sound':   return `Play sound <select class="val" style="padding:2px 4px;border-radius:6px;border:none;background:rgba(255,255,255,0.25);color:white;font-size:11px;font-family:Baloo 2,sans-serif;font-weight:700;"><option value="pop" ${b.val==='pop'?'selected':''}>Pop</option><option value="boing" ${b.val==='boing'?'selected':''}>Boing</option><option value="cheer" ${b.val==='cheer'?'selected':''}>Cheer</option><option value="bell" ${b.val==='bell'?'selected':''}>Bell</option></select>`;
+    case 'play_note':    return `Play note <select class="val" style="padding:2px 4px;border-radius:6px;border:none;background:rgba(255,255,255,0.25);color:white;font-size:11px;font-family:Baloo 2,sans-serif;font-weight:700;"><option value="261" ${b.val==='261'?'selected':''}>C (do)</option><option value="294" ${b.val==='294'?'selected':''}>D (re)</option><option value="329" ${b.val==='329'?'selected':''}>E (mi)</option><option value="349" ${b.val==='349'?'selected':''}>F (fa)</option><option value="392" ${b.val==='392'?'selected':''}>G (sol)</option></select>`;
+    default: return b.type;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// PROGRAM EXECUTION
+// ═══════════════════════════════════════════════════════════
+function resetSprite() {
+  sprite.x = canvas.width / 2;
+  sprite.y = canvas.height / 2;
+  sprite.angle = 0;
+  sprite.size  = 100;
+  sprite.visible = true;
+  scored = false;
+  placeHole();
+  hideBubble();
+  drawStage();
+}
+
+async function runProgram() {
+  if (isRunning) return;
+  if (script.length === 0) { showToast('Add some blocks first!'); return; }
+  const runBlocks_ = script.filter(b => b.type === 'when_run' || (!['when_run','when_tapped'].includes(b.type)));
+  resetSprite();
+  document.getElementById('stageHint').style.display = 'none';
+  isRunning = true; stopFlag = false;
+  document.getElementById('runBtn').style.display = 'none';
+  document.getElementById('stopBtn').style.display = 'block';
+  setStatus('Running…');
+  await runBlocks(script.filter(b => b.type !== 'when_tapped'));
+  if (!stopFlag) {
+    isRunning = false;
+    document.getElementById('runBtn').style.display = 'block';
+    document.getElementById('stopBtn').style.display = 'none';
+    setStatus('Done! Tap ▶ to run again');
+    awardXP(5);
+  }
+}
+
+async function runBlocks(blocks) {
+  let i = 0;
+  while (i < blocks.length && !stopFlag) {
+    const b = blocks[i];
+    if (b.type === 'when_run' || b.type === 'when_tapped') { i++; continue; }
+
+    // Highlight current block
+    document.querySelectorAll('.script-block').forEach(el => el.classList.remove('executing'));
+    const el = document.querySelector(`.script-block[data-id="${b.id}"]`);
+    if (el) el.classList.add('executing');
+
+    await execBlock(b, blocks, i);
+    i++;
+  }
+  document.querySelectorAll('.script-block').forEach(el => el.classList.remove('executing'));
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function execBlock(b, allBlocks, idx) {
+  const val  = parseFloat(b.val)  || 0;
+  const val2 = parseFloat(b.val2) || 2;
+
+  switch(b.type) {
+    case 'move_steps': animateMove(val, 0); break;
+    case 'move_left':  animateMove(-Math.abs(val), 0); break;
+    case 'move_up':    animateMove(0, -Math.abs(val)); break;
+    case 'move_down':  animateMove(0, Math.abs(val)); break;
+    case 'turn_right': sprite.angle += val; drawStage(); break;
+    case 'turn_left':  sprite.angle -= val; drawStage(); break;
+    case 'go_home':
+      sprite.x = canvas.width/2; sprite.y = canvas.height/2; sprite.angle = 0;
+      drawStage(); break;
+    case 'bounce':
+      const sz = (sprite.size/100)*22;
+      if (sprite.x < sz || sprite.x > canvas.width-sz)  sprite.x = Math.max(sz, Math.min(canvas.width-sz, sprite.x));
+      if (sprite.y < sz || sprite.y > canvas.height-sz)  sprite.y = Math.max(sz, Math.min(canvas.height-sz, sprite.y));
+      drawStage(); break;
+    case 'say':
+      showBubble(b.val || 'Hello!'); break;
+    case 'say_seconds':
+      showBubble(b.val || 'Yebo!');
+      await sleep(val2 * 1000);
+      hideBubble(); break;
+    case 'grow':   sprite.size = Math.min(300, sprite.size + val); drawStage(); break;
+    case 'shrink': sprite.size = Math.max(10,  sprite.size - val); drawStage(); break;
+    case 'set_size': sprite.size = val; drawStage(); break;
+    case 'show': sprite.visible = true;  drawStage(); break;
+    case 'hide': sprite.visible = false; drawStage(); break;
+    case 'spin':
+      for (let t=0; t<Math.round(val) && !stopFlag; t++) {
+        for (let d=0; d<360; d+=30) {
+          sprite.angle += 30; drawStage();
+          await sleep(30);
+        }
+      }
+      break;
+    case 'wait': await sleep(val * 1000); break;
+    case 'repeat':
+      const reps = Math.min(20, Math.round(val));
+      const inner = allBlocks.slice(idx+1);
+      for (let r=0; r<reps && !stopFlag; r++) {
+        await runBlocks(inner);
+      }
+      return; // stop outer loop from continuing into repeated blocks
+    case 'forever':
+      const foreverInner = allBlocks.slice(idx+1);
+      while (!stopFlag) {
+        await runBlocks(foreverInner);
+        await sleep(50);
+      }
+      return;
+    case 'stop_all': stopFlag = true; break;
+    case 'play_sound': await playSound(b.val || 'pop'); break;
+    case 'play_note':  await playNote(parseInt(b.val) || 261); break;
+  }
+}
+
+function animateMove(dx, dy, steps=10) {
+  const stepX = dx / steps;
+  const stepY = dy / steps;
+  let count = 0;
+  return new Promise(resolve => {
+    const frame = () => {
+      sprite.x += stepX;
+      sprite.y += stepY;
+      // Clamp to canvas
+      sprite.x = Math.max(0, Math.min(canvas.width, sprite.x));
+      sprite.y = Math.max(0, Math.min(canvas.height, sprite.y));
+      drawStage();
+      if (checkHoleCollision()) { resolve(); return; }
+      if (++count < steps && !stopFlag) requestAnimationFrame(frame);
+      else resolve();
+    };
+    requestAnimationFrame(frame);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// HOLE — target for Project 2 (Score the Goal)
+// ═══════════════════════════════════════════════════════════
+function placeHole() {
+  // Keep the hole away from dead-centre (where the sprite starts) so there's
+  // always some distance for learners to code a path across.
+  const margin = 50;
+  const corners = [
+    { x: margin,               y: margin },
+    { x: canvas.width - margin, y: margin },
+    { x: margin,               y: canvas.height - margin },
+    { x: canvas.width - margin, y: canvas.height - margin }
+  ];
+  const pick = corners[Math.floor(Math.random() * corners.length)];
+  hole.x = pick.x;
+  hole.y = pick.y;
+}
+
+function drawHole() {
+  const grad = ctx.createRadialGradient(hole.x, hole.y, hole.r*0.15, hole.x, hole.y, hole.r);
+  grad.addColorStop(0, '#000000');
+  grad.addColorStop(0.75, '#111111');
+  grad.addColorStop(1, '#9CA3AF');
+  ctx.beginPath();
+  ctx.ellipse(hole.x, hole.y, hole.r, hole.r*0.7, 0, 0, Math.PI*2);
+  ctx.fillStyle = grad;
+  ctx.fill();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+  ctx.stroke();
+}
+
+function checkHoleCollision() {
+  if (scored || !isRunning) return false;
+  const sz = (sprite.size/100) * 18;
+  const dx = sprite.x - hole.x, dy = sprite.y - hole.y;
+  const dist = Math.sqrt(dx*dx + dy*dy);
+  if (dist < hole.r*0.8 + sz*0.3) {
+    scoreHole();
+    return true;
+  }
+  return false;
+}
+
+async function scoreHole() {
+  scored = true;
+  stopFlag = true;
+  // Sink animation — sprite shrinks and fades toward the hole
+  const startSize = sprite.size;
+  for (let t = 0; t < 10; t++) {
+    sprite.size = startSize * (1 - t/10);
+    sprite.x += (hole.x - sprite.x) * 0.3;
+    sprite.y += (hole.y - sprite.y) * 0.3;
+    drawStage();
+    await sleep(30);
+  }
+  sprite.visible = false;
+  drawStage();
+  showBubble('🎉 In the hole! 😎');
+  playSound('cheer');
+  setStatus('🎉 Scored! Try Project 3 next →');
+  awardXP(10);
+  isRunning = false;
+  document.getElementById('runBtn').style.display = 'block';
+  document.getElementById('stopBtn').style.display = 'none';
+}
+
+function showBubble(text) {
+  const bubble = document.getElementById('sayBubble');
+  bubble.textContent = text;
+  bubble.style.display = 'block';
+  bubble.style.left = sprite.x + 'px';
+  bubble.style.top  = (sprite.y - (sprite.size/100)*22) + 'px';
+  drawStage();
+}
+function hideBubble() {
+  document.getElementById('sayBubble').style.display = 'none';
+}
+
+function stopProgram() {
+  stopFlag  = true;
+  isRunning = false;
+  hideBubble();
+  document.getElementById('runBtn').style.display = 'block';
+  document.getElementById('stopBtn').style.display = 'none';
+  document.querySelectorAll('.script-block').forEach(el => el.classList.remove('executing'));
+  setStatus('Stopped');
+}
+
+// ═══════════════════════════════════════════════════════════
+// AUDIO (Web Audio API)
+// ═══════════════════════════════════════════════════════════
+function getAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+async function playNote(freq, duration=0.4) {
+  try {
+    const ac = getAudio();
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+    osc.connect(gain); gain.connect(ac.destination);
+    osc.frequency.value = freq;
+    osc.type = 'sine';
+    gain.gain.setValueAtTime(0.3, ac.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + duration);
+    osc.start(); osc.stop(ac.currentTime + duration);
+    await sleep(duration * 1000);
+  } catch(e) {}
+}
+
+async function playSound(name) {
+  try {
+    const ac = getAudio();
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+    osc.connect(gain); gain.connect(ac.destination);
+    const sounds = {
+      pop:   { freq:600, dur:0.08, type:'sine' },
+      boing: { freq:200, dur:0.5,  type:'sawtooth' },
+      cheer: { freq:523, dur:0.6,  type:'square' },
+      bell:  { freq:880, dur:0.8,  type:'sine' }
+    };
+    const s = sounds[name] || sounds.pop;
+    osc.frequency.value = s.freq;
+    osc.type = s.type;
+    gain.gain.setValueAtTime(0.2, ac.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + s.dur);
+    osc.start(); osc.stop(ac.currentTime + s.dur);
+    await sleep(s.dur * 1000);
+  } catch(e) {}
+}
+
+// ═══════════════════════════════════════════════════════════
+// SAVE / LOAD PROJECT
+// ═══════════════════════════════════════════════════════════
+function saveProject() {
+  localStorage.setItem(PROJECT_KEY, JSON.stringify({ script, sprite: currentEmoji }));
+  showToast('💾 Project saved!');
+  awardXP(10);
+  setStatus('Project saved ✓');
+}
+
+function loadProject() {
+  const saved = localStorage.getItem(PROJECT_KEY);
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+      script = data.script || [];
+      if (data.sprite) {
+        currentEmoji = data.sprite;
+        const name = Object.keys(SPRITES).find(k => SPRITES[k] === data.sprite);
+        if (name) selectSprite(name);
+      }
+      renderScript();
+      if (script.length > 0) document.getElementById('scriptEmpty').style.display = 'none';
+      setStatus('Project loaded ✓');
+    } catch(e) {}
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// XP + BACKEND
+// ═══════════════════════════════════════════════════════════
+function awardXP(amount) {
+  savedXP += amount;
+  localStorage.setItem('frl_project2_xp', savedXP);
+  document.getElementById('xpDisplay').textContent = savedXP;
+}
+
+function setStatus(msg) {
+  document.getElementById('statusMsg').textContent = msg;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ═══════════════════════════════════════════════════════════
+// LOCK CHECK — requires all 4 trail lessons done
+// ═══════════════════════════════════════════════════════════
+function checkLock() {
+  const project1XP = parseInt(localStorage.getItem('frl_project_xp') || '0');
+  const unlocked = project1XP >= 5;
+
+  document.getElementById('lockProgress').style.width = (unlocked ? 100 : 0) + '%';
+  document.getElementById('lockMsg').textContent = unlocked
+    ? 'Project 1 completed — enjoy!'
+    : 'Project 1 not completed yet';
+
+  if (unlocked) {
+    document.getElementById('lockedOverlay').classList.add('hidden');
+    loadProject();
+    resizeCanvas();
+    drawStage();
+    document.getElementById('xpDisplay').textContent = savedXP;
+  } else {
+    document.getElementById('lockedOverlay').classList.remove('hidden');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+window.addEventListener('load', () => {
+  checkLock();
+  resizeCanvas();
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<script>
+  // Apply Twemoji after DOM loads and after any dynamic content changes
+  function applyTwemoji() {
+    twemoji.parse(document.body, {
+      folder: 'svg',
+      ext: '.svg',
+      base: 'https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/'
+    });
+  }
+  document.addEventListener('DOMContentLoaded', applyTwemoji);
+  // Re-apply after language changes (which re-render content)
+  document.addEventListener('langchange', () => setTimeout(applyTwemoji, 100));
+</script>
+</body>
+</html>
